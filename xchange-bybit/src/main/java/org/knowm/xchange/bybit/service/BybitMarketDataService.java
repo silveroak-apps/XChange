@@ -5,7 +5,10 @@ import java.util.List;
 import org.knowm.xchange.bybit.BybitAdapters;
 import org.knowm.xchange.bybit.BybitExchange;
 import org.knowm.xchange.bybit.dto.BybitResult;
+import org.knowm.xchange.bybit.dto.BybitV5Response;
 import org.knowm.xchange.bybit.dto.marketdata.BybitTicker;
+import org.knowm.xchange.bybit.dto.marketdata.BybitV5Result;
+import org.knowm.xchange.bybit.dto.marketdata.KlineInterval;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.marketdata.Ticker;
 import org.knowm.xchange.instrument.Instrument;
@@ -51,4 +54,9 @@ public class BybitMarketDataService extends BybitMarketDataServiceRaw implements
   public Ticker getTicker(CurrencyPair currencyPair, Object... args) throws IOException {
     return getTicker((Instrument) currencyPair, args);
   }
+
+  public BybitV5Response<BybitV5Result> getKlines(KlineInterval interval, Instrument symbol) throws IOException {
+    return  getKlines(interval, symbol, "spot");
+  }
+
 }

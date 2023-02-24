@@ -1,6 +1,7 @@
 package org.knowm.xchange.bybit;
 
 import org.knowm.xchange.bybit.dto.BybitResult;
+import org.knowm.xchange.bybit.dto.BybitV5Response;
 import org.knowm.xchange.bybit.dto.account.BybitBalance;
 import org.knowm.xchange.bybit.dto.trade.BybitOrderDetails;
 import org.knowm.xchange.bybit.service.BybitException;
@@ -89,5 +90,15 @@ public class BybitAdapters {
             walletBalances.getExtCode(),
             walletBalances.getExtCode()
     );
+
+  }
+
+  public static <T> BybitException createBybitExceptionFromResult(BybitV5Response walletBalances) {
+    return new BybitException(
+            walletBalances.getRetCode(),
+            walletBalances.getRetMsg(),
+            walletBalances.getRetExtInfo().toString()
+    );
+
   }
 }

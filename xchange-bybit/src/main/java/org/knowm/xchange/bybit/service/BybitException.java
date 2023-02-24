@@ -20,6 +20,15 @@ public class BybitException extends HttpStatusExceptionSupport {
     this.extInfo = extInfo;
   }
 
+  public BybitException(@JsonProperty("retCode") int retCode,
+                        @JsonProperty("retMsg") String retMsg,
+                        @JsonProperty("retExtInfo") String extInfo
+                       ) {
+    this.retCode = retCode;
+    this.retMsg = retMsg;
+    this.extCode = "";
+    this.extInfo = extInfo;
+  }
   @Override
   public String getMessage() {
     return "{" +

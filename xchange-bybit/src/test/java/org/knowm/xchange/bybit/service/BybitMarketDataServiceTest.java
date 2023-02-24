@@ -13,9 +13,13 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.knowm.xchange.Exchange;
+import org.knowm.xchange.bybit.dto.BybitV5Response;
+import org.knowm.xchange.bybit.dto.marketdata.BybitV5Result;
+import org.knowm.xchange.bybit.dto.marketdata.KlineInterval;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.marketdata.Ticker;
 import org.knowm.xchange.service.marketdata.MarketDataService;
+
 
 public class BybitMarketDataServiceTest extends BaseWiremockTest {
 
@@ -25,7 +29,7 @@ public class BybitMarketDataServiceTest extends BaseWiremockTest {
     MarketDataService marketDataService = bybitExchange.getMarketDataService();
 
     stubFor(
-        get(urlPathEqualTo("/v2/public/tickers"))
+        get(urlPathEqualTo("/v2/public/ticker"))
             .willReturn(
                 aResponse()
                     .withStatus(Status.OK.getStatusCode())
@@ -50,6 +54,25 @@ public class BybitMarketDataServiceTest extends BaseWiremockTest {
     assertThat(ticker.getBidSize()).isNull();
     assertThat(ticker.getAskSize()).isNull();
     assertThat(ticker.getPercentageChange()).isEqualTo(new BigDecimal("-0.015551"));
+
+  }
+
+  @Test
+  public void testGetCandleStickData() throws Exception {
+    Exchange bybitExchange = createExchange();
+    BybitMarketDataService marketDataService = (BybitMarketDataService) bybitExchange.getMarketDataService();
+
+    stubFor(
+            get(urlPathEqualTo("/v5/market/kline"))
+                    .willReturn(
+                            aResponse()
+                                    .withStatus(Status.OK.getStatusCode())
+                                    .withHeader("Content-Type", "application/json")
+                                    .withBody(IOUtils.resourceToString("/getCandleStickData.json5", StandardCharsets.UTF_8))
+                    )
+    );
+    BybitV5Response<BybitV5Result> klines = marketDataService.getKlines(KlineInterval.h1, (CurrencyPair.BTC_USDT));
+    assertThat(klines.getResult().getBybitOHLCVS().size()).isEqualTo(2);
 
   }
 
