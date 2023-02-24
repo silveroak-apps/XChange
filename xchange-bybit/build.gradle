@@ -9,6 +9,7 @@ plugins {
     id 'maven-publish'
     id 'java'
     id 'idea'
+
 }
 configurations {
     compileOnly {
@@ -16,7 +17,8 @@ configurations {
     }
 }
 repositories {
-    mavenLocal()
+    google()
+    mavenCentral()
     maven {
         url = uri('https://oss.sonatype.org/content/groups/public/')
     }
@@ -39,7 +41,7 @@ dependencies {
     testImplementation 'com.github.tomakehurst:wiremock-jre8:2.35.0'
     testImplementation 'org.assertj:assertj-core:3.23.1'
     compileOnly 'org.projectlombok:lombok:1.18.22'
-    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
 }
 
 group = 'org.knowm.xchange'

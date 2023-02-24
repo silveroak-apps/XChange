@@ -44,5 +44,5 @@ GRTAGS
 GPATH
 GSYMS
 
-*/.gradle/*
-*/build/*
+**/.gradle/*
+**/build/*
