@@ -2,6 +2,7 @@ package org.knowm.xchange.bybit.dto.marketdata;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Jacksonized
+@Builder
 @ToString
 @Getter
 @Setter
