@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.ExchangeFactory;
@@ -21,8 +20,9 @@ import org.knowm.xchange.okex.service.OkexTradeService;
 import org.knowm.xchange.service.trade.params.CancelOrderParams;
 import org.knowm.xchange.service.trade.params.orders.DefaultQueryOrderParamInstrument;
 
-@Slf4j
+
 public class OkexExchangeIntegration {
+  private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(OkexExchangeIntegration.class);
   // Enter your authentication details here to run private endpoint tests
   private static final String API_KEY = System.getenv("okx_apikey");
   private static final String SECRET_KEY = System.getenv("okx_secretkey");

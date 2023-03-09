@@ -10,9 +10,11 @@ import org.knowm.xchange.bybit.dto.marketdata.BybitTicker;
 import org.knowm.xchange.bybit.dto.marketdata.BybitV5Result;
 import org.knowm.xchange.bybit.dto.marketdata.KlineInterval;
 import org.knowm.xchange.currency.CurrencyPair;
+import org.knowm.xchange.dto.marketdata.CandleStickData;
 import org.knowm.xchange.dto.marketdata.Ticker;
 import org.knowm.xchange.instrument.Instrument;
 import org.knowm.xchange.service.marketdata.MarketDataService;
+import org.knowm.xchange.service.trade.params.CandleStickDataParams;
 import org.knowm.xchange.utils.Assert;
 
 public class BybitMarketDataService extends BybitMarketDataServiceRaw implements MarketDataService {
@@ -57,6 +59,12 @@ public class BybitMarketDataService extends BybitMarketDataServiceRaw implements
 
   public BybitV5Response<BybitV5Result> getKlines(KlineInterval interval, Instrument symbol) throws IOException {
     return  getKlines(interval, symbol, "spot");
+  }
+
+  @Override
+  public CandleStickData getCandleStickData(Instrument instrument, CandleStickDataParams params) throws IOException {
+
+    return null;
   }
 
 }

@@ -4,6 +4,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,6 +17,7 @@ import org.knowm.xchange.ExchangeFactory;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.derivative.FuturesContract;
+import org.knowm.xchange.dto.marketdata.CandleStickData;
 import org.knowm.xchange.dto.marketdata.FundingRate;
 import org.knowm.xchange.dto.marketdata.Ticker;
 import org.knowm.xchange.dto.marketdata.Trades;
@@ -24,6 +26,7 @@ import org.knowm.xchange.instrument.Instrument;
 import org.knowm.xchange.okex.dto.OkexResponse;
 import org.knowm.xchange.okex.dto.marketdata.OkexCandleStick;
 import org.knowm.xchange.okex.service.OkexMarketDataService;
+import org.knowm.xchange.service.trade.params.DefaultCandleStickParam;
 
 public class OkexPublicDataTest {
 
@@ -77,7 +80,6 @@ public class OkexPublicDataTest {
   }
 
   @Test
-  @Ignore
   public void testCandleHist() throws IOException {
     OkexResponse<List<OkexCandleStick>> barHistDtos =
         ((OkexMarketDataService) exchange.getMarketDataService())
@@ -85,6 +87,15 @@ public class OkexPublicDataTest {
     Assert.assertTrue(Objects.nonNull(barHistDtos) && !barHistDtos.getData().isEmpty());
   }
 
+  @Test
+  public void testCandleStickData() throws IOException {
+    CurrencyPair instrument = new CurrencyPair("BTC/USDT");
+    DefaultCandleStickParam candleStickParam = new DefaultCandleStickParam(new Date(1614512514000L), new Date(1619610114000L), 14400);
+    CandleStickData barHistDtos =
+            (exchange.getMarketDataService()).getCandleStickData(instrument, candleStickParam);
+
+    Assert.assertTrue(Objects.nonNull(barHistDtos) );
+  }
   @Test
   public void checkFundingRate() throws IOException {
     FundingRate fundingRate = exchange.getMarketDataService().getFundingRate(instrument);

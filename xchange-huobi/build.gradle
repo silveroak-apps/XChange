@@ -9,17 +9,11 @@ plugins {
     id 'maven-publish'
     id 'java'
     id 'idea'
+}
 
-}
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
-}
 repositories {
     google()
     mavenCentral()
-    mavenLocal()
     maven {
         url = uri('https://oss.sonatype.org/content/groups/public/')
     }
@@ -28,13 +22,13 @@ repositories {
         url = uri('https://repo.maven.apache.org/maven2/')
     }
 }
-
 javadoc {
     enabled = false
 }
 jar {
     enabled = true
 }
+
 dependencies {
     api 'javax.annotation:javax.annotation-api:1.3.2'
     api 'org.knowm.xchange:xchange-core:5.1.1-SNAPSHOT'
@@ -47,7 +41,7 @@ dependencies {
 
 group = 'org.knowm.xchange'
 version = '5.1.1-SNAPSHOT'
-description = 'XChange Bybit'
+description = 'XChange Huobi'
 sourceCompatibility = '11'
 
 java {

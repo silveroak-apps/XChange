@@ -28,6 +28,8 @@ public class BybitExchange extends BaseExchange {
     exchangeSpecification.setSslUri("https://api.bybit.com");
     exchangeSpecification.setHost("bybit.com");
     exchangeSpecification.setPort(80);
+    exchangeSpecification.setApiKey("to_override_api_key");
+    exchangeSpecification.setSecretKey("to_override_secret_key");
     exchangeSpecification.setExchangeName("Bybit");
     exchangeSpecification.setExchangeDescription("BYBIT");
     return exchangeSpecification;

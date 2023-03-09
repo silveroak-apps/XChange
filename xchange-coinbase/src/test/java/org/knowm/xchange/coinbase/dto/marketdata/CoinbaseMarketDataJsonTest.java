@@ -55,7 +55,7 @@ public class CoinbaseMarketDataJsonTest {
     assertThat(currencies.size()).isEqualTo(161);
 
     CoinbaseCurrency currency = currencies.get(160);
-    assertThat(currency.getIsoCode()).isEqualTo("ZWL");
+    assertThat(currency.getId()).isEqualTo("ZWL");
     assertThat(currency.getName()).isEqualTo("Zimbabwean Dollar (ZWL)");
   }
 

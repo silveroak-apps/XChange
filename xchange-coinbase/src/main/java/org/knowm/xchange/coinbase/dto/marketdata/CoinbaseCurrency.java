@@ -15,12 +15,15 @@ import org.knowm.xchange.coinbase.dto.marketdata.CoinbaseCurrency.CoinbaseCurren
 public class CoinbaseCurrency {
 
   private final String name;
-  private final String isoCode;
+  private final String id;
 
-  private CoinbaseCurrency(String name, final String isoCode) {
+  private final String status;
+
+  private CoinbaseCurrency(String name, final String id, String status) {
 
     this.name = name;
-    this.isoCode = isoCode;
+    this.id = id;
+    this.status = status;
   }
 
   public String getName() {
@@ -28,15 +31,15 @@ public class CoinbaseCurrency {
     return name;
   }
 
-  public String getIsoCode() {
+  public String getId() {
 
-    return isoCode;
+    return id;
   }
 
   @Override
   public String toString() {
 
-    return "CoinbaseCurrency [name=" + name + ", isoCode=" + isoCode + "]";
+    return "CoinbaseCurrency [name=" + name + ", isoCode=" + id + "]";
   }
 
   static class CoinbaseCurrencyDeserializer extends JsonDeserializer<CoinbaseCurrency> {
@@ -49,8 +52,9 @@ public class CoinbaseCurrency {
       JsonNode node = oc.readTree(jp);
       if (node.isArray()) {
         String name = node.path(0).asText();
-        String isoCode = node.path(1).asText();
-        return new CoinbaseCurrency(name, isoCode);
+        String id = node.path(1).asText();
+        String status = node.path(2).asText();
+        return new CoinbaseCurrency(name, id, status);
       }
       return null;
     }
