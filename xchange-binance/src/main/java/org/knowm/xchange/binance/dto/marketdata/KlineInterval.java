@@ -51,4 +51,13 @@ public enum KlineInterval {
     }
     return result;
   }
+
+  public static long[] getSupportedPeriodsInSecs() {
+    long[] result = new long[KlineInterval.values().length];
+    int index = 0;
+    for (KlineInterval period : KlineInterval.values()) {
+      result[index++] = period.millis;
+    }
+    return result;
+  }
 }

@@ -62,7 +62,7 @@ public class BybitMarketDataService extends BybitMarketDataServiceRaw implements
   }
 
   @Override
-  public CandleStickData getCandleStickData(Instrument instrument, CandleStickDataParams params) throws IOException {
+  public CandleStickData getCandleStickData(CurrencyPair instrument, CandleStickDataParams params) throws IOException {
 
     return null;
   }
