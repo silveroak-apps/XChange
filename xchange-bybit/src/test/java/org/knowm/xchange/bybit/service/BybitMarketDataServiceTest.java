@@ -9,6 +9,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.util.Calendar;
+import java.util.Date;
 import javax.ws.rs.core.Response.Status;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
@@ -70,8 +72,13 @@ public class BybitMarketDataServiceTest extends BaseWiremockTest {
                                     .withHeader("Content-Type", "application/json")
                                     .withBody(IOUtils.resourceToString("/getCandleStickData.json5", StandardCharsets.UTF_8))
                     )
+
     );
-    BybitV5Response<BybitV5Result> klines = marketDataService.getKlines(KlineInterval.h1, (CurrencyPair.BTC_USDT));
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(new Date());
+    cal.add(Calendar.HOUR, -4);
+    Date oneHourBack = cal.getTime();
+    BybitV5Response<BybitV5Result> klines = marketDataService.getKlines((CurrencyPair.BTC_USDT), KlineInterval.h1, "spot", oneHourBack.getTime(), new Date().getTime());
     assertThat(klines.getResult().getBybitOHLCVS().size()).isEqualTo(2);
 
   }

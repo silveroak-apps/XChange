@@ -5,25 +5,24 @@ import static java.util.concurrent.TimeUnit.HOURS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 public enum KlineInterval {
-  m1("1m", MINUTES.toMillis(1)),
-  m3("3m", MINUTES.toMillis(3)),
-  m5("5m", MINUTES.toMillis(5)),
-  m15("15m", MINUTES.toMillis(15)),
-  m30("30m", MINUTES.toMillis(30)),
+  m1("1", MINUTES.toMillis(1)),
+  m3("3", MINUTES.toMillis(3)),
+  m5("5", MINUTES.toMillis(5)),
+  m15("15", MINUTES.toMillis(15)),
+  m30("30", MINUTES.toMillis(30)),
 
-  h1("1h", HOURS.toMillis(1)),
-  h2("2h", HOURS.toMillis(2)),
-  h4("4h", HOURS.toMillis(4)),
-  h6("6h", HOURS.toMillis(6)),
-  h8("8h", HOURS.toMillis(8)),
-  h12("12h", HOURS.toMillis(12)),
+  h1("60", HOURS.toMillis(1)),
+  h2("120", HOURS.toMillis(2)),
+  h4("240", HOURS.toMillis(4)),
+  h6("360", HOURS.toMillis(6)),
+  h8("480", HOURS.toMillis(8)),
+  h12("720", HOURS.toMillis(12)),
 
-  d1("1d", DAYS.toMillis(1)),
-  d3("3d", DAYS.toMillis(3)),
+  d1("D", DAYS.toMillis(1)),
 
-  w1("1w", DAYS.toMillis(7)),
+  w1("W", DAYS.toMillis(7)),
 
-  M1("1M", DAYS.toMillis(30));
+  M1("M", DAYS.toMillis(30));
 
   private final String code;
   private final Long millis;
@@ -48,6 +47,15 @@ public enum KlineInterval {
         result = period;
         break;
       }
+    }
+    return result;
+  }
+
+  public static long[] getSupportedPeriodsInSecs() {
+    long[] result = new long[KlineInterval.values().length];
+    int index = 0;
+    for (KlineInterval period : KlineInterval.values()) {
+      result[index++] = period.millis;
     }
     return result;
   }

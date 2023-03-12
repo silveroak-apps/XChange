@@ -34,6 +34,19 @@ public interface Bybit {
 
   @GET
   @Path("/v5/market/kline")
-  BybitV5Response<BybitV5Result> getKlines(@QueryParam("category") String category, @QueryParam("symbol") String symbol, @QueryParam("interval") String interval) throws IOException, BybitException;
+  BybitV5Response<BybitV5Result> getKlines(@QueryParam("symbol") String symbol,
+                                           @QueryParam("category") String category,
+                                           @QueryParam("interval") String interval,
+                                           @QueryParam("start") long start,
+                                           @QueryParam("end") long end,
+                                           @QueryParam("limit") int limit ) throws IOException, BybitException;
+
+  @GET
+  @Path("/v5/market/kline")
+  BybitV5Response<BybitV5Result> getKlinesWithOutLimit(@QueryParam("symbol") String symbol,
+                                                       @QueryParam("category") String category,
+                                                       @QueryParam("interval") String interval,
+                                                       @QueryParam("start") long start,
+                                                       @QueryParam("end") long end ) throws IOException, BybitException;
 
 }

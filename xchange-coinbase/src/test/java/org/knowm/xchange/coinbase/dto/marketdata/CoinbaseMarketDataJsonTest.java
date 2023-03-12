@@ -8,10 +8,8 @@ import com.fasterxml.jackson.databind.type.MapLikeType;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
+
 import org.junit.Test;
 import org.knowm.xchange.utils.DateUtils;
 
@@ -104,4 +102,6 @@ public class CoinbaseMarketDataJsonTest {
     assertThat(historicalSpotPrice.getTimestamp())
         .isEqualTo(DateUtils.fromISO8601DateString("2014-02-08T13:21:51-08:00"));
   }
+
+
 }

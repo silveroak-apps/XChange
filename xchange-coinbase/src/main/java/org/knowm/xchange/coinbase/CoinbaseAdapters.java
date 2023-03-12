@@ -7,10 +7,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.knowm.xchange.coinbase.dto.account.CoinbaseUser;
-import org.knowm.xchange.coinbase.dto.marketdata.CoinbaseHistoricalSpotPrice;
-import org.knowm.xchange.coinbase.dto.marketdata.CoinbaseMoney;
-import org.knowm.xchange.coinbase.dto.marketdata.CoinbasePrice;
-import org.knowm.xchange.coinbase.dto.marketdata.CoinbaseSpotPriceHistory;
+import org.knowm.xchange.coinbase.dto.marketdata.*;
 import org.knowm.xchange.coinbase.dto.trade.CoinbaseTransfer;
 import org.knowm.xchange.coinbase.dto.trade.CoinbaseTransferType;
 import org.knowm.xchange.coinbase.dto.trade.CoinbaseTransfers;
@@ -21,6 +18,8 @@ import org.knowm.xchange.dto.Order.OrderType;
 import org.knowm.xchange.dto.account.AccountInfo;
 import org.knowm.xchange.dto.account.Balance;
 import org.knowm.xchange.dto.account.Wallet;
+import org.knowm.xchange.dto.marketdata.CandleStick;
+import org.knowm.xchange.dto.marketdata.CandleStickData;
 import org.knowm.xchange.dto.marketdata.Ticker;
 import org.knowm.xchange.dto.marketdata.Trades.TradeSortType;
 import org.knowm.xchange.dto.trade.UserTrade;
@@ -32,17 +31,18 @@ public final class CoinbaseAdapters {
   private static final int TWENTY_FOUR_HOURS_IN_MILLIS = 1000 * 60 * 60 * 24;
   private static final int PRICE_SCALE = 10;
 
-  private CoinbaseAdapters() {}
+  private CoinbaseAdapters() {
+  }
 
   public static AccountInfo adaptAccountInfo(CoinbaseUser user) {
 
     final String username = user.getEmail();
     final CoinbaseMoney money = user.getBalance();
     final Balance balance =
-        new Balance(Currency.getInstance(money.getCurrency()), money.getAmount());
+            new Balance(Currency.getInstance(money.getCurrency()), money.getAmount());
 
     final AccountInfo accountInfoTemporaryName =
-        new AccountInfo(username, Wallet.Builder.from(Arrays.asList(balance)).build());
+            new AccountInfo(username, Wallet.Builder.from(Arrays.asList(balance)).build());
     return accountInfoTemporaryName;
   }
 
@@ -58,22 +58,22 @@ public final class CoinbaseAdapters {
 
   private static UserTrade adaptTrade(CoinbaseBuySell transaction, OrderType orderType) {
     return new UserTrade.Builder()
-        .type(orderType)
-        .originalAmount(transaction.getAmount().getAmount())
-        .currencyPair(
-            new CurrencyPair(
-                transaction.getAmount().getCurrency(), transaction.getTotal().getCurrency()))
-        .price(
-            transaction
-                .getSubTotal()
-                .getAmount()
-                .divide(transaction.getAmount().getAmount(), PRICE_SCALE, RoundingMode.HALF_UP))
-        .timestamp(Date.from(transaction.getCreatedAt().toInstant()))
-        .id(transaction.getId())
-        .orderId(transaction.getTransaction().getId())
-        .feeAmount(transaction.getFee().getAmount())
-        .feeCurrency(Currency.getInstance(transaction.getFee().getCurrency()))
-        .build();
+            .type(orderType)
+            .originalAmount(transaction.getAmount().getAmount())
+            .currencyPair(
+                    new CurrencyPair(
+                            transaction.getAmount().getCurrency(), transaction.getTotal().getCurrency()))
+            .price(
+                    transaction
+                            .getSubTotal()
+                            .getAmount()
+                            .divide(transaction.getAmount().getAmount(), PRICE_SCALE, RoundingMode.HALF_UP))
+            .timestamp(Date.from(transaction.getCreatedAt().toInstant()))
+            .id(transaction.getId())
+            .orderId(transaction.getTransaction().getId())
+            .feeAmount(transaction.getFee().getAmount())
+            .feeCurrency(Currency.getInstance(transaction.getFee().getCurrency()))
+            .build();
   }
 
   public static UserTrades adaptTrades(CoinbaseTransfers transfers) {
@@ -102,16 +102,16 @@ public final class CoinbaseAdapters {
     final String feeCurrency = transfer.getCoinbaseFee().getCurrency();
 
     return new UserTrade.Builder()
-        .type(orderType)
-        .originalAmount(originalAmount)
-        .currencyPair(new CurrencyPair(tradableIdentifier, transactionCurrency))
-        .price(price)
-        .timestamp(timestamp)
-        .id(id)
-        .orderId(transferId)
-        .feeAmount(feeAmount)
-        .feeCurrency(Currency.getInstance(feeCurrency))
-        .build();
+            .type(orderType)
+            .originalAmount(originalAmount)
+            .currencyPair(new CurrencyPair(tradableIdentifier, transactionCurrency))
+            .price(price)
+            .timestamp(timestamp)
+            .id(id)
+            .orderId(transferId)
+            .feeAmount(feeAmount)
+            .feeCurrency(Currency.getInstance(feeCurrency))
+            .build();
   }
 
   public static OrderType adaptOrderType(CoinbaseTransferType transferType) {
@@ -126,18 +126,18 @@ public final class CoinbaseAdapters {
   }
 
   public static Ticker adaptTicker(
-      CurrencyPair currencyPair,
-      final CoinbasePrice buyPrice,
-      final CoinbasePrice sellPrice,
-      final CoinbaseMoney spotRate,
-      final CoinbaseSpotPriceHistory coinbaseSpotPriceHistory) {
+          CurrencyPair currencyPair,
+          final CoinbasePrice buyPrice,
+          final CoinbasePrice sellPrice,
+          final CoinbaseMoney spotRate,
+          final CoinbaseSpotPriceHistory coinbaseSpotPriceHistory) {
 
     final Ticker.Builder tickerBuilder =
-        new Ticker.Builder()
-            .currencyPair(currencyPair)
-            .ask(buyPrice.getSubTotal().getAmount())
-            .bid(sellPrice.getSubTotal().getAmount())
-            .last(spotRate.getAmount());
+            new Ticker.Builder()
+                    .currencyPair(currencyPair)
+                    .ask(buyPrice.getSubTotal().getAmount())
+                    .bid(sellPrice.getSubTotal().getAmount())
+                    .last(spotRate.getAmount());
 
     // Get the 24 hour high and low spot price if the history is provided.
     if (coinbaseSpotPriceHistory != null) {
@@ -146,11 +146,11 @@ public final class CoinbaseAdapters {
       Date twentyFourHoursAgo = null;
       // The spot price history list is sorted in descending order by timestamp when deserialized.
       for (CoinbaseHistoricalSpotPrice historicalSpotPrice :
-          coinbaseSpotPriceHistory.getSpotPriceHistory()) {
+              coinbaseSpotPriceHistory.getSpotPriceHistory()) {
 
         if (twentyFourHoursAgo == null) {
           twentyFourHoursAgo =
-              new Date(historicalSpotPrice.getTimestamp().getTime() - TWENTY_FOUR_HOURS_IN_MILLIS);
+                  new Date(historicalSpotPrice.getTimestamp().getTime() - TWENTY_FOUR_HOURS_IN_MILLIS);
         } else if (historicalSpotPrice.getTimestamp().before(twentyFourHoursAgo)) {
           break;
         }
@@ -166,5 +166,30 @@ public final class CoinbaseAdapters {
     }
 
     return tickerBuilder.build();
+  }
+
+  public static String convertToCoinbaseSymbol(String instrumentName) {
+    return instrumentName.replace("/", "-").toUpperCase();
+  }
+
+  public static CandleStickData adaptBinanceCandleStickData(List<ArrayList<Object>> klines, CurrencyPair currencyPair, KlineInterval interval) {
+    CandleStickData candleStickData = null;
+    if (klines != null && !klines.isEmpty()) {
+      List<CandleStick> candleSticks = new ArrayList<>();
+      klines.forEach(a ->  {
+                candleSticks.add(
+                        new CandleStick.Builder()
+                                .timestamp(new Date(Long.parseLong(a.get(0).toString()+ "000") +  interval.getMillis()))
+                                .low(new BigDecimal(a.get(1).toString()))
+                                .high(new BigDecimal(a.get(2).toString()))
+                                .open(new BigDecimal(a.get(3).toString()))
+                                .close(new BigDecimal(a.get(4).toString()))
+                                .volume(new BigDecimal(a.get(5).toString()))
+                                .build());
+              }
+      );
+      candleStickData = new CandleStickData(currencyPair, candleSticks);
+    }
+    return candleStickData;
   }
 }

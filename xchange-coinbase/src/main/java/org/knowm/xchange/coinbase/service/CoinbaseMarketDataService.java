@@ -2,17 +2,27 @@ package org.knowm.xchange.coinbase.service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.coinbase.CoinbaseAdapters;
 import org.knowm.xchange.coinbase.dto.marketdata.CoinbaseMoney;
 import org.knowm.xchange.coinbase.dto.marketdata.CoinbasePrice;
 import org.knowm.xchange.coinbase.dto.marketdata.CoinbaseSpotPriceHistory;
+import org.knowm.xchange.coinbase.dto.marketdata.KlineInterval;
 import org.knowm.xchange.currency.CurrencyPair;
+import org.knowm.xchange.dto.marketdata.CandleStickData;
 import org.knowm.xchange.dto.marketdata.OrderBook;
 import org.knowm.xchange.dto.marketdata.Ticker;
 import org.knowm.xchange.dto.marketdata.Trades;
 import org.knowm.xchange.exceptions.NotAvailableFromExchangeException;
+import org.knowm.xchange.exceptions.NotYetImplementedForExchangeException;
 import org.knowm.xchange.service.marketdata.MarketDataService;
+import org.knowm.xchange.service.trade.params.CandleStickDataParams;
+import org.knowm.xchange.service.trade.params.DefaultCandleStickParam;
+import org.knowm.xchange.service.trade.params.DefaultCandleStickParamWithLimit;
 
 /** @author jamespedwards42 */
 public class CoinbaseMarketDataService extends CoinbaseMarketDataServiceRaw
@@ -66,5 +76,26 @@ public class CoinbaseMarketDataService extends CoinbaseMarketDataServiceRaw
   public Trades getTrades(CurrencyPair currencyPair, final Object... args) {
 
     throw new NotAvailableFromExchangeException();
+  }
+
+  @Override
+  public CandleStickData getCandleStickData(CurrencyPair currencyPair, CandleStickDataParams params) throws IOException {
+
+    if (!(params instanceof DefaultCandleStickParam)) {
+      throw new NotYetImplementedForExchangeException("Only DefaultCandleStickParam is supported");
+    }
+    DefaultCandleStickParam defaultCandleStickParam = (DefaultCandleStickParam) params;
+    KlineInterval periodType =
+            KlineInterval.getPeriodTypeFromSecs(defaultCandleStickParam.getPeriodInSecs());
+    if (periodType == null) {
+      throw new NotYetImplementedForExchangeException("Only discrete period values are supported;" +
+              Arrays.toString(KlineInterval.getSupportedPeriodsInSecs()));
+    }
+
+    List<ArrayList<Object>> klines = getCoinbaseHistoricalCandles( CoinbaseAdapters.convertToCoinbaseSymbol(currencyPair.toString()),
+            periodType.code(),
+            defaultCandleStickParam.getStartDate().getTime(),
+            defaultCandleStickParam.getEndDate().getTime());
+    return CoinbaseAdapters.adaptBinanceCandleStickData(klines, currencyPair, periodType);
   }
 }

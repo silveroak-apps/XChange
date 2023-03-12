@@ -1,6 +1,7 @@
 package org.knowm.xchange.bybit.service;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import org.knowm.xchange.bybit.BybitAdapters;
 import org.knowm.xchange.bybit.BybitExchange;
@@ -12,9 +13,12 @@ import org.knowm.xchange.bybit.dto.marketdata.KlineInterval;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.marketdata.CandleStickData;
 import org.knowm.xchange.dto.marketdata.Ticker;
+import org.knowm.xchange.exceptions.NotYetImplementedForExchangeException;
 import org.knowm.xchange.instrument.Instrument;
 import org.knowm.xchange.service.marketdata.MarketDataService;
 import org.knowm.xchange.service.trade.params.CandleStickDataParams;
+import org.knowm.xchange.service.trade.params.DefaultCandleStickParam;
+import org.knowm.xchange.service.trade.params.DefaultCandleStickParamWithLimit;
 import org.knowm.xchange.utils.Assert;
 
 public class BybitMarketDataService extends BybitMarketDataServiceRaw implements MarketDataService {
@@ -57,14 +61,31 @@ public class BybitMarketDataService extends BybitMarketDataServiceRaw implements
     return getTicker((Instrument) currencyPair, args);
   }
 
-  public BybitV5Response<BybitV5Result> getKlines(KlineInterval interval, Instrument symbol) throws IOException {
-    return  getKlines(interval, symbol, "spot");
-  }
+//  public BybitV5Response<BybitV5Result> getKlines(KlineInterval interval, Instrument symbol) throws IOException {
+//    return  getKlines(interval, symbol, "spot");
+//  }
 
   @Override
-  public CandleStickData getCandleStickData(CurrencyPair instrument, CandleStickDataParams params) throws IOException {
+  public CandleStickData getCandleStickData(CurrencyPair currencyPair, CandleStickDataParams params) throws IOException {
+    String defaultCategory = "spot";
+    if (!(params instanceof DefaultCandleStickParam)) {
+      throw new NotYetImplementedForExchangeException("Only DefaultCandleStickParam is supported");
+    }
+    DefaultCandleStickParam defaultCandleStickParam = (DefaultCandleStickParam) params;
+    KlineInterval periodType =
+            KlineInterval.getPeriodTypeFromSecs(defaultCandleStickParam.getPeriodInSecs());
+    if (periodType == null) {
+      throw new NotYetImplementedForExchangeException("Only discrete period values are supported;" +
+              Arrays.toString(KlineInterval.getSupportedPeriodsInSecs()));
+    }
 
-    return null;
+    Integer limit = null;
+    if (params instanceof DefaultCandleStickParamWithLimit) {
+      limit = ((DefaultCandleStickParamWithLimit) params).getLimit();
+    }
+
+    BybitV5Response<BybitV5Result> bybitKlines = getKlines( currencyPair, periodType, defaultCategory, defaultCandleStickParam.getStartDate().getTime(), defaultCandleStickParam.getEndDate().getTime());
+    return BybitAdapters.adaptBinanceCandleStickData(bybitKlines, currencyPair, periodType);
   }
 
 }

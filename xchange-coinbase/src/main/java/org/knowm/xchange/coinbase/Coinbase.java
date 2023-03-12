@@ -2,14 +2,10 @@ package org.knowm.xchange.coinbase;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import org.knowm.xchange.coinbase.dto.CoinbaseException;
 import org.knowm.xchange.coinbase.dto.account.CoinbaseToken;
@@ -17,9 +13,11 @@ import org.knowm.xchange.coinbase.dto.account.CoinbaseUser;
 import org.knowm.xchange.coinbase.dto.marketdata.CoinbaseCurrency;
 import org.knowm.xchange.coinbase.dto.marketdata.CoinbaseMoney;
 import org.knowm.xchange.coinbase.dto.marketdata.CoinbasePrice;
+import org.knowm.xchange.coinbase.dto.marketdata.CoinbaseCandleData;
+
 
 /** @author jamespedwards42 */
-@Path("api/v1")
+@Path("")
 @Produces(MediaType.APPLICATION_JSON)
 public interface Coinbase {
 
@@ -62,4 +60,14 @@ public interface Coinbase {
   @POST
   @Path("tokens")
   CoinbaseToken createToken() throws IOException, CoinbaseException;
+
+  @GET
+  @Path("products/{product_id}/candles")
+  List<ArrayList<Object>> getHistoricalCandles(
+          @PathParam("product_id") String product_id,
+          @QueryParam("granularity") Integer granularity,
+          @QueryParam("start") Long start,
+          @QueryParam("end") Long end)
+          throws IOException, org.knowm.xchange.coinbase.v2.dto.CoinbaseException;
+
 }

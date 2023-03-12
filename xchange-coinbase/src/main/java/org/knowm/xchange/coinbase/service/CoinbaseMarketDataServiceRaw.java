@@ -2,24 +2,35 @@ package org.knowm.xchange.coinbase.service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import org.knowm.xchange.Exchange;
+import org.knowm.xchange.client.ExchangeRestProxyBuilder;
+import org.knowm.xchange.coinbase.Coinbase;
+import org.knowm.xchange.coinbase.CoinbaseAuthenticated;
 import org.knowm.xchange.coinbase.dto.marketdata.CoinbaseMoney;
 import org.knowm.xchange.coinbase.dto.marketdata.CoinbasePrice;
 import org.knowm.xchange.coinbase.dto.marketdata.CoinbaseSpotPriceHistory;
+import org.knowm.xchange.coinbase.dto.marketdata.CoinbaseCandleData;
 
 /** @author jamespedwards42 */
-class CoinbaseMarketDataServiceRaw extends CoinbaseBaseService {
+class CoinbaseMarketDataServiceRaw   {
 
+  protected final Coinbase coinbase;
   /**
    * Constructor
    *
    * @param exchange
    */
   public CoinbaseMarketDataServiceRaw(Exchange exchange) {
-
-    super(exchange);
+    coinbase =
+            ExchangeRestProxyBuilder.forInterface(
+                            Coinbase.class, exchange.getExchangeSpecification())
+                    .build();
   }
+
+
 
   /**
    * Unauthenticated resource that returns BTC to fiat (and vice versus) exchange rates in various
@@ -165,5 +176,17 @@ class CoinbaseMarketDataServiceRaw extends CoinbaseBaseService {
   public CoinbaseSpotPriceHistory getCoinbaseHistoricalSpotRates(Integer page) throws IOException {
 
     return CoinbaseSpotPriceHistory.fromRawString(coinbase.getHistoricalSpotRates(page));
+  }
+  /**
+   * Unauthenticated resource that displays the current Historical spot rates for Bitcoin in USD.
+   *
+   * @return With candles based on the parameters
+   * @throws IOException
+   * @see <a
+   *     href="https://coinbase.com/api/doc/1.0/prices/exchange_rates.html">coinbase.com/api/doc/1.0/prices/exchange_rates.html</a>
+   */
+  public List<ArrayList<Object>> getCoinbaseHistoricalCandles(String productId, Integer granularity, Long start, Long end) throws IOException {
+
+    return coinbase.getHistoricalCandles(productId, granularity, start, end);
   }
 }

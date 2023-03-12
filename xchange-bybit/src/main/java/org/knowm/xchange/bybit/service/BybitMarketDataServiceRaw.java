@@ -10,6 +10,7 @@ import org.knowm.xchange.bybit.dto.marketdata.BybitSymbol;
 import org.knowm.xchange.bybit.dto.marketdata.BybitTicker;
 import org.knowm.xchange.bybit.dto.marketdata.BybitV5Result;
 import org.knowm.xchange.bybit.dto.marketdata.KlineInterval;
+import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.instrument.Instrument;
 
 public class BybitMarketDataServiceRaw extends BybitBaseService {
@@ -36,8 +37,8 @@ public class BybitMarketDataServiceRaw extends BybitBaseService {
     }
     return result;
   }
-  public BybitV5Response<BybitV5Result> getKlines(KlineInterval interval, Instrument symbol, String category) throws IOException {
-    BybitV5Response<BybitV5Result> result = bybit.getKlines(interval.code(), BybitAdapters.convertToBybitSymbol(symbol.toString()), category);
+  public BybitV5Response<BybitV5Result> getKlines(CurrencyPair symbol, KlineInterval interval, String category, long start, long end) throws IOException {
+    BybitV5Response<BybitV5Result> result = bybit.getKlinesWithOutLimit(BybitAdapters.convertToBybitSymbol(symbol.toString()),category , interval.code(), start, end);
 
     if (!result.isSuccess()) {
       throw BybitAdapters.createBybitExceptionFromResult(result);
