@@ -24,10 +24,7 @@ import org.knowm.xchange.dto.account.FundingRecord;
 import org.knowm.xchange.dto.account.OpenPosition;
 import org.knowm.xchange.dto.account.OpenPositions;
 import org.knowm.xchange.dto.account.Wallet;
-import org.knowm.xchange.dto.marketdata.OrderBook;
-import org.knowm.xchange.dto.marketdata.Ticker;
-import org.knowm.xchange.dto.marketdata.Trade;
-import org.knowm.xchange.dto.marketdata.Trades;
+import org.knowm.xchange.dto.marketdata.*;
 import org.knowm.xchange.dto.marketdata.Trades.TradeSortType;
 import org.knowm.xchange.dto.meta.CurrencyMetaData;
 import org.knowm.xchange.dto.meta.ExchangeMetaData;
@@ -44,13 +41,7 @@ import org.knowm.xchange.kraken.dto.account.KrakenDepositAddress;
 import org.knowm.xchange.kraken.dto.account.KrakenLedger;
 import org.knowm.xchange.kraken.dto.account.KrakenTradeVolume;
 import org.knowm.xchange.kraken.dto.account.KrakenVolumeFee;
-import org.knowm.xchange.kraken.dto.marketdata.KrakenAsset;
-import org.knowm.xchange.kraken.dto.marketdata.KrakenAssetPair;
-import org.knowm.xchange.kraken.dto.marketdata.KrakenDepth;
-import org.knowm.xchange.kraken.dto.marketdata.KrakenFee;
-import org.knowm.xchange.kraken.dto.marketdata.KrakenPublicOrder;
-import org.knowm.xchange.kraken.dto.marketdata.KrakenPublicTrade;
-import org.knowm.xchange.kraken.dto.marketdata.KrakenTicker;
+import org.knowm.xchange.kraken.dto.marketdata.*;
 import org.knowm.xchange.kraken.dto.trade.KrakenOpenPosition;
 import org.knowm.xchange.kraken.dto.trade.KrakenOrder;
 import org.knowm.xchange.kraken.dto.trade.KrakenOrderDescription;
@@ -552,5 +543,31 @@ public class KrakenAdapters {
 
       return limitOrders;
     }
+  }
+
+  public static CandleStickData adaptKrakenCandleStickData(
+          KrakenOHLCs klines,
+          CurrencyPair currencyPair,
+          KlineInterval interval) {
+
+    CandleStickData candleStickData = null;
+    if (klines != null && klines.getOHLCs() != null) {
+      List<CandleStick> candleSticks = new ArrayList<>();
+        klines.getOHLCs().forEach(a ->  {
+                    candleSticks.add(
+                            new CandleStick.Builder()
+                                    .timestamp(new Date(Long.parseLong(a.getTime()+ "000") +  interval.getMillis()  - 1))
+                                    .low(a.getLow())
+                                    .high(a.getHigh())
+                                    .open(a.getOpen())
+                                    .close(a.getClose())
+                                    .volume(a.getVolume())
+                                    .build());
+                }
+        );
+      candleStickData = new CandleStickData(currencyPair, candleSticks);
+    }
+
+    return candleStickData;
   }
 }

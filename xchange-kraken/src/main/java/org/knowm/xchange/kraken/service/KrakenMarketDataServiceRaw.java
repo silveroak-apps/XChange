@@ -31,14 +31,11 @@ public class KrakenMarketDataServiceRaw extends KrakenBaseService {
     super(exchange);
   }
 
-  public KrakenOHLCs getKrakenOHLC(CurrencyPair currencyPair) throws IOException {
-    return getKrakenOHLC(currencyPair, null, null);
-  }
-
+  //Time in seconds
   public KrakenOHLCs getKrakenOHLC(CurrencyPair currencyPair, Integer interval, Long since)
       throws IOException {
     String krakenCurrencyPair = KrakenUtils.createKrakenCurrencyPair(currencyPair);
-    KrakenOHLCResult OHLCResult = kraken.getOHLC(krakenCurrencyPair, interval, since);
+    KrakenOHLCResult OHLCResult = kraken.getOHLC(krakenCurrencyPair, interval, since/1000);
     return checkResult(OHLCResult);
   }
 

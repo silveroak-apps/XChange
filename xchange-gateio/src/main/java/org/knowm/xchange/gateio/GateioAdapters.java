@@ -258,7 +258,7 @@ public final class GateioAdapters {
     return new ExchangeMetaData(currencyPairs, currencies, null, null, null);
   }
 
-  public static CandleStickData adaptBinanceCandleStickData(
+  public static CandleStickData adaptGateioCandleStickData(
           List<ArrayList<Object>> klines,
           CurrencyPair currencyPair,
           KlineInterval interval) {
@@ -270,11 +270,11 @@ public final class GateioAdapters {
                 candleSticks.add(
                         new CandleStick.Builder()
                                 .timestamp(new Date(Long.parseLong(a.get(0).toString()+ "000") +  interval.getMillis()  - 1))
-                                .low(new BigDecimal(a.get(1).toString()))
-                                .high(new BigDecimal(a.get(2).toString()))
-                                .open(new BigDecimal(a.get(3).toString()))
-                                .close(new BigDecimal(a.get(4).toString()))
-                                .volume(new BigDecimal(a.get(5).toString()))
+                                .volume(new BigDecimal(a.get(1).toString()))
+                                .close(new BigDecimal(a.get(2).toString()))
+                                .high(new BigDecimal(a.get(3).toString()))
+                                .low(new BigDecimal(a.get(4).toString()))
+                                .open(new BigDecimal(a.get(5).toString()))
                                 .build());
               }
       );

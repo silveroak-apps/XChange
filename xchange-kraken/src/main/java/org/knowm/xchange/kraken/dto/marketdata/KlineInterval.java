@@ -1,28 +1,27 @@
-package org.knowm.xchange.gateio.v4.dto;
+package org.knowm.xchange.kraken.dto.marketdata;
 
 import static java.util.concurrent.TimeUnit.*;
 
 public enum KlineInterval {
-  s10("10s", SECONDS.toMillis(10)),
-  m1("1m", MINUTES.toMillis(1)),
-  m5("5m", MINUTES.toMillis(5)),
-  m15("15m", MINUTES.toMillis(15)),
-  m30("30m", MINUTES.toMillis(30)),
+  m1(1, MINUTES.toMillis(1)),
+  m5(5, MINUTES.toMillis(5)),
+  m15(15, MINUTES.toMillis(15)),
+  m30(30, MINUTES.toMillis(30)),
 
-  h1("1h", HOURS.toMillis(1)),
-  h4("4h", HOURS.toMillis(4)),
-  h8("8h", HOURS.toMillis(8)),
+  h1(60, HOURS.toMillis(1)),
+  h4(240, HOURS.toMillis(4)),
 
-  d1("1D", DAYS.toMillis(1)),
 
-  w1("7D", DAYS.toMillis(7)),
+  d1(1400, DAYS.toMillis(1)),
 
-  M1("30D", DAYS.toMillis(30));
+  w1(10080, DAYS.toMillis(7)),
 
-  private final String code;
+  M1(21600, DAYS.toMillis(30));
+
+  private final Integer code;
   private final Long millis;
 
-  private KlineInterval(String code, Long millis) {
+  private KlineInterval(Integer code, Long millis) {
     this.millis = millis;
     this.code = code;
   }
@@ -31,7 +30,7 @@ public enum KlineInterval {
     return millis;
   }
 
-  public String code() {
+  public Integer code() {
     return code;
   }
 

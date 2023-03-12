@@ -1,18 +1,24 @@
 package org.knowm.xchange.kraken.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.currency.CurrencyPair;
+import org.knowm.xchange.dto.marketdata.CandleStickData;
 import org.knowm.xchange.dto.marketdata.OrderBook;
 import org.knowm.xchange.dto.marketdata.Ticker;
 import org.knowm.xchange.dto.marketdata.Trades;
 import org.knowm.xchange.exceptions.ExchangeException;
 import org.knowm.xchange.kraken.KrakenAdapters;
+import org.knowm.xchange.kraken.dto.marketdata.KlineInterval;
 import org.knowm.xchange.kraken.dto.marketdata.KrakenDepth;
+import org.knowm.xchange.kraken.dto.marketdata.KrakenOHLCs;
 import org.knowm.xchange.kraken.dto.marketdata.KrakenPublicTrades;
 import org.knowm.xchange.service.marketdata.MarketDataService;
 import org.knowm.xchange.service.marketdata.params.Params;
+import org.knowm.xchange.service.trade.params.CandleStickDataParams;
+import org.knowm.xchange.service.trade.params.DefaultCandleStickParam;
 
 public class KrakenMarketDataService extends KrakenMarketDataServiceRaw
     implements MarketDataService {
@@ -76,5 +82,17 @@ public class KrakenMarketDataService extends KrakenMarketDataServiceRaw
     KrakenPublicTrades krakenTrades = getKrakenTrades(currencyPair, since);
     return KrakenAdapters.adaptTrades(
         krakenTrades.getTrades(), currencyPair, krakenTrades.getLast());
+  }
+
+  @Override
+  public CandleStickData getCandleStickData(CurrencyPair currencyPair, CandleStickDataParams params)
+          throws IOException {
+    DefaultCandleStickParam defaultCandleStickParam = (DefaultCandleStickParam) params;
+    KrakenOHLCs klikes = getKrakenOHLC(currencyPair,
+            KlineInterval.getPeriodTypeFromSecs(defaultCandleStickParam.getPeriodInSecs()).code(),
+            defaultCandleStickParam.getStartDate().getTime()
+    );
+
+    return KrakenAdapters.adaptKrakenCandleStickData(klikes, currencyPair, KlineInterval.getPeriodTypeFromSecs(defaultCandleStickParam.getPeriodInSecs()));
   }
 }
