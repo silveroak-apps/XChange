@@ -17,10 +17,7 @@ import org.knowm.xchange.dto.account.Balance;
 import org.knowm.xchange.dto.account.FundingRecord;
 import org.knowm.xchange.dto.account.FundingRecord.Status;
 import org.knowm.xchange.dto.account.Wallet;
-import org.knowm.xchange.dto.marketdata.OrderBook;
-import org.knowm.xchange.dto.marketdata.Ticker;
-import org.knowm.xchange.dto.marketdata.Trade;
-import org.knowm.xchange.dto.marketdata.Trades;
+import org.knowm.xchange.dto.marketdata.*;
 import org.knowm.xchange.dto.marketdata.Trades.TradeSortType;
 import org.knowm.xchange.dto.meta.CurrencyMetaData;
 import org.knowm.xchange.dto.meta.ExchangeMetaData;
@@ -44,6 +41,7 @@ import org.knowm.xchange.gateio.dto.trade.GateioOpenOrder;
 import org.knowm.xchange.gateio.dto.trade.GateioOpenOrders;
 import org.knowm.xchange.gateio.dto.trade.GateioTrade;
 import org.knowm.xchange.gateio.service.GateioMarketDataServiceRaw;
+import org.knowm.xchange.gateio.v4.dto.KlineInterval;
 import org.knowm.xchange.instrument.Instrument;
 import org.knowm.xchange.utils.DateUtils;
 
@@ -260,6 +258,32 @@ public final class GateioAdapters {
     return new ExchangeMetaData(currencyPairs, currencies, null, null, null);
   }
 
+  public static CandleStickData adaptBinanceCandleStickData(
+          List<ArrayList<Object>> klines,
+          CurrencyPair currencyPair,
+          KlineInterval interval) {
+
+    CandleStickData candleStickData = null;
+    if (klines != null && !klines.isEmpty()) {
+      List<CandleStick> candleSticks = new ArrayList<>();
+      klines.forEach(a ->  {
+                candleSticks.add(
+                        new CandleStick.Builder()
+                                .timestamp(new Date(Long.parseLong(a.get(0).toString()+ "000") +  interval.getMillis()  - 1))
+                                .low(new BigDecimal(a.get(1).toString()))
+                                .high(new BigDecimal(a.get(2).toString()))
+                                .open(new BigDecimal(a.get(3).toString()))
+                                .close(new BigDecimal(a.get(4).toString()))
+                                .volume(new BigDecimal(a.get(5).toString()))
+                                .build());
+              }
+      );
+      candleStickData = new CandleStickData(currencyPair, candleSticks);
+    }
+
+    return candleStickData;
+  }
+
   private static CurrencyMetaData adaptCurrencyMetaData(
       GateioCoin gateioCoin, GateioFeeInfo gateioFeeInfo) {
     WalletHealth walletHealth = WalletHealth.ONLINE;
@@ -333,5 +357,14 @@ public final class GateioAdapters {
       default:
         return Status.PROCESSING; // @TODO which statusses are possible at gate.io?
     }
+  }
+
+  public static String toV4PairString(CurrencyPair currencyPair) {
+
+    String baseSymbol = currencyPair.base.getCurrencyCode();
+    String counterSymbol = currencyPair.counter.getCurrencyCode();
+    String pair = baseSymbol + "_" + counterSymbol;
+
+    return pair;
   }
 }
