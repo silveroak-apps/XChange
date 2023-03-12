@@ -1,6 +1,7 @@
 package org.knowm.xchange.okex.service;
 
-public enum OkexCandleStickPeriodType {
+public enum
+OkexCandleStickPeriodType {
   CANDLE_STICK_1M(1, "1m"),
   CANDLE_STICK_3M(3, "3m"),
   CANDLE_STICK_5M(5, "5m"),
@@ -25,6 +26,10 @@ public enum OkexCandleStickPeriodType {
     }
     return result;
   }
+
+  public long getPeriodInSecs() {
+    return periodInSecs;
+  }
   public static long[] getSupportedPeriodsInSecs() {
     long[] result = new long[OkexCandleStickPeriodType.values().length];
     int index = 0;
@@ -33,6 +38,7 @@ public enum OkexCandleStickPeriodType {
     }
     return result;
   }
+
   public String getFieldValue() {
     return fieldValue;
   }

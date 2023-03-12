@@ -68,7 +68,7 @@ public class OkexMarketDataService extends OkexMarketDataServiceRaw implements M
             String.valueOf(defaultCandleStickParam.getEndDate().getTime()),
             String.valueOf(defaultCandleStickParam.getStartDate().getTime()),
             periodType.getFieldValue(), limit);
-    return OkexAdapters.adaptCandleStickData(historyCandle.getData(), currencyPair);
+    return OkexAdapters.adaptCandleStickData(historyCandle.getData(), currencyPair, periodType.getPeriodInSecs());
   }
 
   @Override

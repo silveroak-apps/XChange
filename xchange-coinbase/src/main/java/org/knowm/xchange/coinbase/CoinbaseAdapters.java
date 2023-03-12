@@ -179,7 +179,7 @@ public final class CoinbaseAdapters {
       klines.forEach(a ->  {
                 candleSticks.add(
                         new CandleStick.Builder()
-                                .timestamp(new Date(Long.parseLong(a.get(0).toString()+ "000") +  interval.getMillis()))
+                                .timestamp(new Date(Long.parseLong(a.get(0).toString()+ "000") +  interval.getMillis()  - 1))
                                 .low(new BigDecimal(a.get(1).toString()))
                                 .high(new BigDecimal(a.get(2).toString()))
                                 .open(new BigDecimal(a.get(3).toString()))

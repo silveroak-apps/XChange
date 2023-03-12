@@ -118,7 +118,7 @@ public class BybitAdapters {
             for (BybitKline chartData : klines.getResult().getBybitOHLCVS()) {
                 candleSticks.add(
                         new CandleStick.Builder()
-                                .timestamp(new Date(Long.parseLong(chartData.getOpenTime()) + interval.getMillis()))
+                                .timestamp(new Date(Long.parseLong(chartData.getOpenTime()) + interval.getMillis() -1)) //getting close time from the closetime
                                 .open(new BigDecimal(chartData.getOpen()))
                                 .high(new BigDecimal(chartData.getHigh()))
                                 .low(new BigDecimal(chartData.getLow()))
