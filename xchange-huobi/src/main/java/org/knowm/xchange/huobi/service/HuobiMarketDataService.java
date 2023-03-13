@@ -1,6 +1,7 @@
 package org.knowm.xchange.huobi.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -8,17 +9,15 @@ import java.util.stream.Collectors;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.Order.OrderType;
-import org.knowm.xchange.dto.marketdata.OrderBook;
-import org.knowm.xchange.dto.marketdata.Ticker;
-import org.knowm.xchange.dto.marketdata.Trade;
-import org.knowm.xchange.dto.marketdata.Trades;
+import org.knowm.xchange.dto.marketdata.*;
 import org.knowm.xchange.dto.trade.LimitOrder;
 import org.knowm.xchange.exceptions.ExchangeException;
 import org.knowm.xchange.huobi.HuobiAdapters;
-import org.knowm.xchange.huobi.dto.marketdata.HuobiDepth;
-import org.knowm.xchange.huobi.dto.marketdata.HuobiTradeWrapper;
+import org.knowm.xchange.huobi.dto.marketdata.*;
 import org.knowm.xchange.service.marketdata.MarketDataService;
 import org.knowm.xchange.service.marketdata.params.Params;
+import org.knowm.xchange.service.trade.params.CandleStickDataParams;
+import org.knowm.xchange.service.trade.params.DefaultCandleStickParam;
 
 public class HuobiMarketDataService extends HuobiMarketDataServiceRaw implements MarketDataService {
 
@@ -100,4 +99,16 @@ public class HuobiMarketDataService extends HuobiMarketDataServiceRaw implements
 
     return sortedTrades;
   }
+
+    @Override
+    public CandleStickData getCandleStickData(CurrencyPair currencyPair, CandleStickDataParams params) throws IOException {
+      HuobiCandleStickParam huobiCandleStickParam = (HuobiCandleStickParam) params;
+      HuobiKline[] huobiKlines = getKlines(currencyPair,
+              KlineInterval.getPeriodTypeFromSecs(huobiCandleStickParam.getPeriodInSecs()),
+              huobiCandleStickParam.getSize()
+      );
+
+      return HuobiAdapters.adaptHuobiCandleStickData(huobiKlines,
+              currencyPair, KlineInterval.getPeriodTypeFromSecs(huobiCandleStickParam.getPeriodInSecs()));
+    }
 }

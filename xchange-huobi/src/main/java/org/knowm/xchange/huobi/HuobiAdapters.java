@@ -13,6 +13,8 @@ import org.knowm.xchange.dto.account.Balance;
 import org.knowm.xchange.dto.account.FundingRecord;
 import org.knowm.xchange.dto.account.FundingRecord.Status;
 import org.knowm.xchange.dto.account.Wallet;
+import org.knowm.xchange.dto.marketdata.CandleStick;
+import org.knowm.xchange.dto.marketdata.CandleStickData;
 import org.knowm.xchange.dto.marketdata.Ticker;
 import org.knowm.xchange.dto.marketdata.Trades.TradeSortType;
 import org.knowm.xchange.dto.meta.*;
@@ -27,12 +29,7 @@ import org.knowm.xchange.exceptions.ExchangeException;
 import org.knowm.xchange.huobi.dto.account.HuobiBalanceRecord;
 import org.knowm.xchange.huobi.dto.account.HuobiBalanceSum;
 import org.knowm.xchange.huobi.dto.account.HuobiFundingRecord;
-import org.knowm.xchange.huobi.dto.marketdata.HuobiAllTicker;
-import org.knowm.xchange.huobi.dto.marketdata.HuobiAsset;
-import org.knowm.xchange.huobi.dto.marketdata.HuobiAssetPair;
-import org.knowm.xchange.huobi.dto.marketdata.HuobiCurrency;
-import org.knowm.xchange.huobi.dto.marketdata.HuobiCurrencyWrapper;
-import org.knowm.xchange.huobi.dto.marketdata.HuobiTicker;
+import org.knowm.xchange.huobi.dto.marketdata.*;
 import org.knowm.xchange.huobi.dto.trade.HuobiOrder;
 import org.knowm.xchange.instrument.Instrument;
 
@@ -459,5 +456,33 @@ public class HuobiAdapters {
       default:
         return null;
     }
+  }
+
+  public static CandleStickData adaptHuobiCandleStickData(
+          HuobiKline[] klines,
+          CurrencyPair currencyPair,
+          KlineInterval interval) {
+
+    CandleStickData candleStickData = null;
+    if (klines != null && klines.length > 0) {
+      List<CandleStick> candleSticks = new ArrayList<>();
+        Arrays.stream(klines).forEach(
+                kline -> {
+                    candleSticks.add(
+                            new CandleStick.Builder()
+                                    .timestamp(new Date(Long.parseLong(kline.getId() + "000") + interval.getMillis() - 1))
+                                    .volume(kline.getVol())
+                                    .close(kline.getClose())
+                                    .high(kline.getHigh())
+                                    .low(kline.getLow())
+                                    .open(kline.getOpen())
+                                    .build());
+                }
+        );
+
+      candleStickData = new CandleStickData(currencyPair, candleSticks);
+    }
+
+    return candleStickData;
   }
 }
