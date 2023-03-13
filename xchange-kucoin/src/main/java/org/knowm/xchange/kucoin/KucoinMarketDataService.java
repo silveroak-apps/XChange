@@ -5,11 +5,16 @@ import java.util.Arrays;
 import java.util.List;
 import org.knowm.xchange.client.ResilienceRegistries;
 import org.knowm.xchange.currency.CurrencyPair;
+import org.knowm.xchange.dto.marketdata.CandleStickData;
 import org.knowm.xchange.dto.marketdata.OrderBook;
 import org.knowm.xchange.dto.marketdata.Ticker;
 import org.knowm.xchange.dto.marketdata.Trades;
+import org.knowm.xchange.kucoin.dto.KlineIntervalType;
+import org.knowm.xchange.kucoin.dto.response.KucoinKline;
 import org.knowm.xchange.service.marketdata.MarketDataService;
 import org.knowm.xchange.service.marketdata.params.Params;
+import org.knowm.xchange.service.trade.params.CandleStickDataParams;
+import org.knowm.xchange.service.trade.params.DefaultCandleStickParam;
 
 public class KucoinMarketDataService extends KucoinMarketDataServiceRaw
     implements MarketDataService {
@@ -57,5 +62,18 @@ public class KucoinMarketDataService extends KucoinMarketDataServiceRaw
   @Override
   public Trades getTrades(CurrencyPair currencyPair, Object... args) throws IOException {
     return KucoinAdapters.adaptTrades(currencyPair, getKucoinTrades(currencyPair));
+  }
+
+  //Time in seconds
+  @Override
+  public CandleStickData getCandleStickData(CurrencyPair currencyPair, CandleStickDataParams params) throws IOException {
+    DefaultCandleStickParam defaultCandleStickParam = (DefaultCandleStickParam) params;
+    List<KucoinKline> kucoinKlines = getKucoinKlines(currencyPair,
+            defaultCandleStickParam.getStartDate().getTime()/1000,
+             defaultCandleStickParam.getEndDate().getTime()/1000,
+                      KlineIntervalType.getPeriodTypeFromSecs(((DefaultCandleStickParam) params).getPeriodInSecs()));
+    return KucoinAdapters.adaptKucoinCandleStickData(kucoinKlines,
+            currencyPair,
+            KlineIntervalType.getPeriodTypeFromSecs(((DefaultCandleStickParam) params).getPeriodInSecs()));
   }
 }

@@ -47,4 +47,26 @@ public enum KlineIntervalType {
   public String code() {
     return code;
   }
+
+  public static KlineIntervalType getPeriodTypeFromSecs(long periodInSecs) {
+    KlineIntervalType result = null;
+    for (KlineIntervalType period : KlineIntervalType.values()) {
+      if (period.seconds == periodInSecs) {
+        result = period;
+        break;
+      }
+    }
+    return result;
+  }
+
+  public Long getMillis() { return seconds * 1000;}
+
+  public static long[] getSupportedPeriodsInSecs() {
+    long[] result = new long[KlineIntervalType.values().length];
+    int index = 0;
+    for (KlineIntervalType period : KlineIntervalType.values()) {
+      result[index++] = period.seconds;
+    }
+    return result;
+  }
 }
