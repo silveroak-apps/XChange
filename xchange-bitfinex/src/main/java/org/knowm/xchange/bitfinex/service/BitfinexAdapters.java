@@ -37,9 +37,7 @@ import org.knowm.xchange.bitfinex.v1.dto.trade.BitfinexOrderFlags;
 import org.knowm.xchange.bitfinex.v1.dto.trade.BitfinexOrderStatusResponse;
 import org.knowm.xchange.bitfinex.v1.dto.trade.BitfinexTradeResponse;
 import org.knowm.xchange.bitfinex.v2.dto.account.Movement;
-import org.knowm.xchange.bitfinex.v2.dto.marketdata.BitfinexPublicTrade;
-import org.knowm.xchange.bitfinex.v2.dto.marketdata.BitfinexTickerFundingCurrency;
-import org.knowm.xchange.bitfinex.v2.dto.marketdata.BitfinexTickerTraidingPair;
+import org.knowm.xchange.bitfinex.v2.dto.marketdata.*;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.Order;
@@ -49,10 +47,7 @@ import org.knowm.xchange.dto.account.Balance;
 import org.knowm.xchange.dto.account.Fee;
 import org.knowm.xchange.dto.account.FundingRecord;
 import org.knowm.xchange.dto.account.Wallet;
-import org.knowm.xchange.dto.marketdata.OrderBook;
-import org.knowm.xchange.dto.marketdata.Ticker;
-import org.knowm.xchange.dto.marketdata.Trade;
-import org.knowm.xchange.dto.marketdata.Trades;
+import org.knowm.xchange.dto.marketdata.*;
 import org.knowm.xchange.dto.marketdata.Trades.TradeSortType;
 import org.knowm.xchange.dto.meta.CurrencyMetaData;
 import org.knowm.xchange.dto.meta.ExchangeMetaData;
@@ -884,6 +879,26 @@ public final class BitfinexAdapters {
       fundingRecords.add(fundingRecordEntry);
     }
     return fundingRecords;
+  }
+
+  public static CandleStickData adaptBitfinexCandleStickData(List<BitfinexCandle> bitfinexKlines, CurrencyPair currencyPair, KlineInterval periodType) {
+    CandleStickData candleStickData = null;
+    if (bitfinexKlines.size() != 0) {
+      List<CandleStick> candleSticks = new ArrayList<>();
+      for (BitfinexCandle chartData : bitfinexKlines) {
+        candleSticks.add(
+                new CandleStick.Builder()
+                        .timestamp(new Date(chartData.getMillisecondTimestamp() + periodType.getMillis() -1))
+                        .open(BigDecimal.valueOf(chartData.getOpen()))
+                        .high(BigDecimal.valueOf(chartData.getHigh()))
+                        .low(BigDecimal.valueOf(chartData.getLow()))
+                        .close(BigDecimal.valueOf(chartData.getClose()))
+                        .volume(BigDecimal.valueOf(chartData.getVolume()))
+                        .build());
+      }
+      candleStickData = new CandleStickData(currencyPair, candleSticks);
+    }
+    return candleStickData;
   }
 
   public static class OrdersContainer {
