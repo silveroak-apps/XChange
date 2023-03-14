@@ -2,13 +2,7 @@ package org.knowm.xchange.gemini.v1;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.currency.CurrencyPair;
@@ -19,10 +13,7 @@ import org.knowm.xchange.dto.account.Balance;
 import org.knowm.xchange.dto.account.Fee;
 import org.knowm.xchange.dto.account.FundingRecord;
 import org.knowm.xchange.dto.account.Wallet;
-import org.knowm.xchange.dto.marketdata.OrderBook;
-import org.knowm.xchange.dto.marketdata.Ticker;
-import org.knowm.xchange.dto.marketdata.Trade;
-import org.knowm.xchange.dto.marketdata.Trades;
+import org.knowm.xchange.dto.marketdata.*;
 import org.knowm.xchange.dto.marketdata.Trades.TradeSortType;
 import org.knowm.xchange.dto.meta.CurrencyMetaData;
 import org.knowm.xchange.dto.meta.ExchangeMetaData;
@@ -38,13 +29,10 @@ import org.knowm.xchange.exceptions.NotYetImplementedForExchangeException;
 import org.knowm.xchange.gemini.v1.dto.account.GeminiBalancesResponse;
 import org.knowm.xchange.gemini.v1.dto.account.GeminiTrailingVolumeResponse;
 import org.knowm.xchange.gemini.v1.dto.account.GeminiTransfer;
-import org.knowm.xchange.gemini.v1.dto.marketdata.GeminiDepth;
-import org.knowm.xchange.gemini.v1.dto.marketdata.GeminiLendLevel;
-import org.knowm.xchange.gemini.v1.dto.marketdata.GeminiLevel;
-import org.knowm.xchange.gemini.v1.dto.marketdata.GeminiTicker;
-import org.knowm.xchange.gemini.v1.dto.marketdata.GeminiTrade;
+import org.knowm.xchange.gemini.v1.dto.marketdata.*;
 import org.knowm.xchange.gemini.v1.dto.trade.GeminiOrderStatusResponse;
 import org.knowm.xchange.gemini.v1.dto.trade.GeminiTradeResponse;
+import org.knowm.xchange.gemini.v2.dto.marketdata.GeminiCandle;
 import org.knowm.xchange.instrument.Instrument;
 import org.knowm.xchange.utils.DateUtils;
 import org.slf4j.Logger;
@@ -530,5 +518,27 @@ public final class GeminiAdapters {
 
       return limitOrders;
     }
+  }
+
+  public static CandleStickData adaptGeminiCandleStickData(GeminiCandle[] candles , CurrencyPair currencyPair, KlineInterval interval) {
+    CandleStickData candleStickData = null;
+    if (candles != null && candles.length > 0) {
+      List<CandleStick> candleSticks = new ArrayList<>();
+      Arrays.stream(candles).forEach(a ->  {
+                candleSticks.add(
+                        new CandleStick.Builder()
+                                .timestamp(new Date(a.getTime() + interval.getMillis() -1))
+                                .low(a.getLow())
+                                .high(a.getHigh())
+                                .open(a.getOpen())
+                                .close(a.getClose())
+                                .volume(a.getVolume())
+                                .build());
+              }
+      );
+
+      candleStickData = new CandleStickData(currencyPair, candleSticks);
+    }
+    return candleStickData;
   }
 }

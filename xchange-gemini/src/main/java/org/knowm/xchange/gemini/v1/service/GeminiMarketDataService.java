@@ -1,24 +1,28 @@
 package org.knowm.xchange.gemini.v1.service;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.currency.CurrencyPair;
-import org.knowm.xchange.dto.marketdata.LoanOrderBook;
-import org.knowm.xchange.dto.marketdata.OrderBook;
-import org.knowm.xchange.dto.marketdata.Ticker;
-import org.knowm.xchange.dto.marketdata.Trades;
+import org.knowm.xchange.dto.marketdata.*;
 import org.knowm.xchange.dto.trade.FixedRateLoanOrder;
 import org.knowm.xchange.dto.trade.FloatingRateLoanOrder;
 import org.knowm.xchange.exceptions.ExchangeException;
+import org.knowm.xchange.exceptions.NotYetImplementedForExchangeException;
 import org.knowm.xchange.gemini.v1.GeminiAdapters;
 import org.knowm.xchange.gemini.v1.GeminiUtils;
 import org.knowm.xchange.gemini.v1.dto.marketdata.GeminiDepth;
 import org.knowm.xchange.gemini.v1.dto.marketdata.GeminiLendDepth;
 import org.knowm.xchange.gemini.v1.dto.marketdata.GeminiTrade;
+import org.knowm.xchange.gemini.v1.dto.marketdata.KlineInterval;
+import org.knowm.xchange.gemini.v2.dto.marketdata.GeminiCandle;
 import org.knowm.xchange.instrument.Instrument;
 import org.knowm.xchange.service.marketdata.MarketDataService;
+import org.knowm.xchange.service.trade.params.CandleStickDataParams;
+import org.knowm.xchange.service.trade.params.DefaultCandleStickParam;
 
 /**
  * Implementation of the market data service for Gemini
@@ -160,5 +164,23 @@ public class GeminiMarketDataService extends GeminiMarketDataServiceRaw
         getGeminiTrades(GeminiUtils.toPairString(currencyPair), lastTradeTime, limitTrades);
 
     return GeminiAdapters.adaptTrades(trades, currencyPair);
+  }
+
+  @Override
+  public CandleStickData getCandleStickData(CurrencyPair instrument, CandleStickDataParams params) throws IOException {
+    if (!(params instanceof DefaultCandleStickParam)) {
+      throw new NotYetImplementedForExchangeException("Only DefaultCandleStickParam is supported");
+    }
+    DefaultCandleStickParam defaultCandleStickParam = (DefaultCandleStickParam) params;
+    KlineInterval periodType =
+            KlineInterval.getPeriodTypeFromSecs(defaultCandleStickParam.getPeriodInSecs());
+    if (periodType == null) {
+      throw new NotYetImplementedForExchangeException("Only discrete period values are supported;" +
+              Arrays.toString(KlineInterval.getSupportedPeriodsInSecs()));
+    }
+
+
+    GeminiCandle[] candles = getCandles((CurrencyPair) instrument, Duration.ofMillis(periodType.getMillis()));
+    return GeminiAdapters.adaptGeminiCandleStickData(candles, instrument, periodType);
   }
 }
