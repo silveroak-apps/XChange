@@ -4,18 +4,10 @@ import static java.math.BigDecimal.ZERO;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import org.knowm.xchange.bitstamp.dto.account.BitstampBalance;
-import org.knowm.xchange.bitstamp.dto.marketdata.BitstampOrderBook;
-import org.knowm.xchange.bitstamp.dto.marketdata.BitstampPairInfo;
-import org.knowm.xchange.bitstamp.dto.marketdata.BitstampTicker;
-import org.knowm.xchange.bitstamp.dto.marketdata.BitstampTransaction;
+import org.knowm.xchange.bitstamp.dto.marketdata.*;
 import org.knowm.xchange.bitstamp.dto.trade.BitstampOrderStatus;
 import org.knowm.xchange.bitstamp.dto.trade.BitstampOrderStatusResponse;
 import org.knowm.xchange.bitstamp.dto.trade.BitstampOrderTransaction;
@@ -29,10 +21,7 @@ import org.knowm.xchange.dto.account.AccountInfo;
 import org.knowm.xchange.dto.account.Balance;
 import org.knowm.xchange.dto.account.FundingRecord;
 import org.knowm.xchange.dto.account.Wallet;
-import org.knowm.xchange.dto.marketdata.OrderBook;
-import org.knowm.xchange.dto.marketdata.Ticker;
-import org.knowm.xchange.dto.marketdata.Trade;
-import org.knowm.xchange.dto.marketdata.Trades;
+import org.knowm.xchange.dto.marketdata.*;
 import org.knowm.xchange.dto.marketdata.Trades.TradeSortType;
 import org.knowm.xchange.dto.meta.CurrencyMetaData;
 import org.knowm.xchange.dto.meta.ExchangeMetaData;
@@ -455,4 +444,30 @@ public final class BitstampAdapters {
 
     return metaData;
   }
+
+    public static CandleStickData adaptBitstampCandleStickData(LinkedHashMap bitstampKlines, CurrencyPair currencyPair, KlineInterval periodType) {
+      CandleStickData candleStickData = null;
+      //Ugly hack
+      if (bitstampKlines != null && !bitstampKlines.isEmpty()
+              && bitstampKlines.get("data") != null
+              && !((LinkedHashMap)bitstampKlines.get("data")).isEmpty()
+              && ((LinkedHashMap)bitstampKlines.get("data")).get("ohlc") != null
+              && !((List)((LinkedHashMap)bitstampKlines.get("data")).get("ohlc")).isEmpty()) {
+        List<CandleStick> candleSticks = new ArrayList<>();
+        for (Object data : ((List)((LinkedHashMap)bitstampKlines.get("data")).get("ohlc"))) {
+            LinkedHashMap chartData = (LinkedHashMap) data;
+          candleSticks.add(
+                  new CandleStick.Builder()
+                          .timestamp(new Date(Long.parseLong(chartData.get("timestamp") + "000") + periodType.getMillis() -1))
+                          .open(new BigDecimal((String)chartData.get("open")))
+                          .high(new BigDecimal((String)chartData.get("high")))
+                          .low(new BigDecimal((String)chartData.get("low")))
+                          .close(new BigDecimal((String)chartData.get("close")))
+                          .volume(new BigDecimal((String)chartData.get("volume")))
+                          .build());
+        }
+        candleStickData = new CandleStickData(currencyPair, candleSticks);
+      }
+      return candleStickData;
+    }
 }

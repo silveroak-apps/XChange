@@ -1,14 +1,12 @@
 package org.knowm.xchange.bitstamp.service;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import javax.annotation.Nullable;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.bitstamp.BitstampV2;
 import org.knowm.xchange.bitstamp.dto.BitstampException;
-import org.knowm.xchange.bitstamp.dto.marketdata.BitstampOrderBook;
-import org.knowm.xchange.bitstamp.dto.marketdata.BitstampPairInfo;
-import org.knowm.xchange.bitstamp.dto.marketdata.BitstampTicker;
-import org.knowm.xchange.bitstamp.dto.marketdata.BitstampTransaction;
+import org.knowm.xchange.bitstamp.dto.marketdata.*;
 import org.knowm.xchange.client.ExchangeRestProxyBuilder;
 import org.knowm.xchange.currency.CurrencyPair;
 
@@ -45,6 +43,15 @@ public class BitstampMarketDataServiceRaw extends BitstampBaseService {
 
     try {
       return bitstampV2.getOrderBook(new BitstampV2.Pair(pair));
+    } catch (BitstampException e) {
+      throw handleError(e);
+    }
+  }
+
+  //start and end Time are in seconds
+  public LinkedHashMap getOhlcData(CurrencyPair pair, long start, long end, int interval, int limit) throws IOException {
+    try {
+      return bitstampV2.getOhlcs(new BitstampV2.Pair(pair), start /1000, end / 1000, interval, limit);
     } catch (BitstampException e) {
       throw handleError(e);
     }
