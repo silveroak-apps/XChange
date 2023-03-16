@@ -1,31 +1,26 @@
-package org.knowm.xchange.bitfinex.v2.dto.marketdata;
+package org.knowm.xchange.ascendex.dto.marketdata;
 
 import static java.util.concurrent.TimeUnit.*;
 
 public enum KlineInterval {
-  m1("1m", MINUTES.toMillis(1)),
-  m3("3m", MINUTES.toMillis(3)),
-  m5("5m", MINUTES.toMillis(5)),
-  m15("15m", MINUTES.toMillis(15)),
-  m30("30m", MINUTES.toMillis(30)),
+  m1(1, MINUTES.toMillis(1)),
+  m5(5, MINUTES.toMillis(5)),
+  m15(15, MINUTES.toMillis(15)),
+  m30(30, MINUTES.toMillis(30)),
 
-  h1("1h", HOURS.toMillis(1)),
-  h3("3h", HOURS.toMillis(3)),
-  h6("6h", HOURS.toMillis(6)),
-  h12("12h", HOURS.toMillis(12)),
+  h1(60, HOURS.toMillis(1)),
+  h2(120, HOURS.toMillis(2)),
+  h4(240, HOURS.toMillis(4)),
 
-  d1("1D", DAYS.toMillis(1)),
+  h12(720, HOURS.toMillis(12)),
 
-  w1("1W", DAYS.toMillis(7)),
+  d1(1440, DAYS.toMillis(1));
 
-  d14("14D", DAYS.toMillis(14)),
 
-  M1("1M", DAYS.toMillis(30));
-
-  private final String code;
+  private final Integer code;
   private final Long millis;
 
-  private KlineInterval(String code, Long millis) {
+  private KlineInterval(Integer code, Long millis) {
     this.millis = millis;
     this.code = code;
   }
@@ -34,7 +29,7 @@ public enum KlineInterval {
     return millis;
   }
 
-  public String code() {
+  public Integer code() {
     return code;
   }
 

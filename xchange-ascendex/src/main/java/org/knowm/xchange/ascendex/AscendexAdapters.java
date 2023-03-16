@@ -1,5 +1,6 @@
 package org.knowm.xchange.ascendex;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,10 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import org.knowm.xchange.ascendex.dto.account.AscendexCashAccountBalanceDto;
-import org.knowm.xchange.ascendex.dto.marketdata.AscendexAssetDto;
-import org.knowm.xchange.ascendex.dto.marketdata.AscendexMarketTradesDto;
-import org.knowm.xchange.ascendex.dto.marketdata.AscendexOrderbookDto;
-import org.knowm.xchange.ascendex.dto.marketdata.AscendexProductDto;
+import org.knowm.xchange.ascendex.dto.marketdata.*;
 import org.knowm.xchange.ascendex.dto.trade.AscendexFlags;
 import org.knowm.xchange.ascendex.dto.trade.AscendexOpenOrdersResponse;
 import org.knowm.xchange.ascendex.dto.trade.AscendexPlaceOrderRequestPayload;
@@ -22,9 +20,7 @@ import org.knowm.xchange.dto.Order;
 import org.knowm.xchange.dto.account.AccountInfo;
 import org.knowm.xchange.dto.account.Balance;
 import org.knowm.xchange.dto.account.Wallet;
-import org.knowm.xchange.dto.marketdata.OrderBook;
-import org.knowm.xchange.dto.marketdata.Trade;
-import org.knowm.xchange.dto.marketdata.Trades;
+import org.knowm.xchange.dto.marketdata.*;
 import org.knowm.xchange.dto.meta.CurrencyMetaData;
 import org.knowm.xchange.dto.meta.ExchangeMetaData;
 import org.knowm.xchange.dto.meta.InstrumentMetaData;
@@ -237,4 +233,27 @@ public class AscendexAdapters {
 
     return new Trades(trades, Trades.TradeSortType.SortByTimestamp);
   }
+
+    public static CandleStickData adaptCandleStickData(List<AscendexBarHistDto> ascendexKlines,
+                                                       CurrencyPair currencyPair,
+                                                       KlineInterval periodType) {
+      CandleStickData candleStickData = null;
+      if (ascendexKlines.size() != 0) {
+        List<CandleStick> candleSticks = new ArrayList<>();
+        for (AscendexBarHistDto chartData : ascendexKlines) {
+          candleSticks.add(
+                  new CandleStick.Builder()
+                          .open(new BigDecimal(chartData.getBar().getOpenPrice()))
+                          .high(new BigDecimal(chartData.getBar().getHighPrice()))
+                          .low(new BigDecimal(chartData.getBar().getLowPrice()))
+                          .close(new BigDecimal(chartData.getBar().getClosePrice()))
+                          .volume(new BigDecimal(chartData.getBar().getVolume()))
+                          .timestamp(new Date(chartData.getBar().getTimestamp() + periodType.getMillis() -1))
+                          .build());
+
+        }
+        candleStickData = new CandleStickData(currencyPair, candleSticks);
+      }
+      return candleStickData;
+    }
 }
