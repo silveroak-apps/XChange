@@ -403,24 +403,45 @@ public class PoloniexAdapters {
         Order.OrderStatus.UNKNOWN);
   }
 
+
+  /**
+   * From the ArrayList<Object></Object>
+   * low	String	lowest price over the interval
+   * high	String	highest price over the interval
+   * open	String	price at the start time
+   * close	String	price at the end time
+   * amount	String	quote units traded over the interval
+   * quantity	String	base units traded over the interval
+   * buyTakerAmount	String	quote units traded over the interval filled by market buy orders
+   * buyTakerQuantity	String	base units traded over the interval filled by market buy orders
+   * tradeCount	Integer	count of trades
+   * ts	Long	time the record was pushed
+   * weightedAverage	String	weighted average over the interval
+   * interval	String	the selected interval
+   * startTime	Long	start time of interval
+   * closeTime	Long	close time of interval
+   * @param poloniexChartData
+   * @param currencyPair
+   * @param klineInterval
+   * @return
+   */
   public static CandleStickData adaptPoloniexCandleStickData(
-          PoloniexChartData[] poloniexChartData, CurrencyPair currencyPair) {
+          ArrayList<ArrayList<Object>> poloniexChartData, CurrencyPair currencyPair, KlineInterval klineInterval) {
 
     CandleStickData candleStickData = null;
-    if (poloniexChartData.length != 0) {
+    if (poloniexChartData != null) {
       List<CandleStick> candleSticks = new ArrayList<>();
-      for (PoloniexChartData chartData : poloniexChartData) {
-        candleSticks.add(new CandleStick.Builder()
-                .timestamp(chartData.getDate())
-                .open(chartData.getOpen())
-                .high(chartData.getHigh())
-                .low(chartData.getLow())
-                .close(chartData.getClose())
-                .volume(chartData.getVolume())
-                .quotaVolume(chartData.getQuoteVolume())
-                .build()
-        );
-      }
+        for (ArrayList<Object> a : poloniexChartData) {
+          candleSticks.add(
+                  new CandleStick.Builder()
+                          .low(new BigDecimal((String)a.get(0)))
+                          .high(new BigDecimal((String)a.get(1)))
+                          .open(new BigDecimal((String)a.get(2)))
+                            .close(new BigDecimal((String)a.get(3)))
+                            .volume(new BigDecimal((String)a.get(4)))
+                            .timestamp(new Date((Long)a.get(13)))
+                          .build());
+        }
       candleStickData = new CandleStickData(currencyPair, candleSticks);
     }
 

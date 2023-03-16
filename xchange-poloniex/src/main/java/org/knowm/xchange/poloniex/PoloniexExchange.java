@@ -32,7 +32,7 @@ public class PoloniexExchange extends BaseExchange implements Exchange {
   public ExchangeSpecification getDefaultExchangeSpecification() {
 
     ExchangeSpecification exchangeSpecification = new ExchangeSpecification(this.getClass());
-    exchangeSpecification.setSslUri("https://poloniex.com/");
+    exchangeSpecification.setSslUri("https://api.poloniex.com/");
     exchangeSpecification.setHost("poloniex.com");
     exchangeSpecification.setPort(80);
     exchangeSpecification.setExchangeName("Poloniex");
@@ -47,19 +47,4 @@ public class PoloniexExchange extends BaseExchange implements Exchange {
     return nonceFactory;
   }
 
-  @Override
-  public void remoteInit() throws IOException {
-
-    PoloniexMarketDataServiceRaw poloniexMarketDataServiceRaw =
-        (PoloniexMarketDataServiceRaw) marketDataService;
-
-    Map<String, PoloniexCurrencyInfo> poloniexCurrencyInfoMap =
-        poloniexMarketDataServiceRaw.getPoloniexCurrencyInfo();
-    Map<String, PoloniexMarketData> poloniexMarketDataMap =
-        poloniexMarketDataServiceRaw.getAllPoloniexTickers();
-
-    exchangeMetaData =
-        PoloniexAdapters.adaptToExchangeMetaData(
-            poloniexCurrencyInfoMap, poloniexMarketDataMap, exchangeMetaData);
-  }
 }

@@ -1,6 +1,7 @@
 package org.knowm.xchange.poloniex.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import org.knowm.xchange.Exchange;
@@ -34,88 +35,13 @@ public class PoloniexMarketDataServiceRaw extends PoloniexBaseService {
     super(exchange);
   }
 
-  public Map<String, PoloniexCurrencyInfo> getPoloniexCurrencyInfo() throws IOException {
-    String command = "returnCurrencies";
-    return poloniex.getCurrencyInfo(command);
-  }
-
-  public Map<String, PoloniexMarketData> getAllPoloniexTickers() throws IOException {
-    String command = "returnTicker";
-    return poloniex.getTicker(command);
-  }
-
-  public PoloniexTicker getPoloniexTicker(CurrencyPair currencyPair) throws IOException {
-
-    String command = "returnTicker";
-    String pairString = PoloniexUtils.toPairString(currencyPair);
-    long now = System.currentTimeMillis();
-
-    if (TickermarketData == null || next_refresh < now) {
-      try {
-        TickermarketData = poloniex.getTicker(command);
-      } catch (PoloniexException e) {
-        throw PoloniexErrorAdapter.adapt(e);
-      } finally {
-        // also nice to take a short break on an error
-        next_refresh = now + cache_delay;
-      }
-    }
-
-    PoloniexMarketData data = TickermarketData.get(pairString);
-    if (data == null) {
-      return null;
-    }
-    return new PoloniexTicker(data, currencyPair);
-  }
-
-  public PoloniexDepth getPoloniexDepth(CurrencyPair currencyPair) throws IOException {
-
-    String command = "returnOrderBook";
-    String pairString = PoloniexUtils.toPairString(currencyPair);
-    return poloniex.getOrderBook(command, pairString);
-  }
-
-  public PoloniexDepth getPoloniexDepth(CurrencyPair currencyPair, int depth) throws IOException {
-
-    String command = "returnOrderBook";
-    String pairString = PoloniexUtils.toPairString(currencyPair);
-    return poloniex.getOrderBook(command, pairString, depth);
-  }
-
-  public Map<String, PoloniexDepth> getAllPoloniexDepths() throws IOException {
-
-    String command = "returnOrderBook";
-    return poloniex.getAllOrderBooks(command, "all", null);
-  }
-
-  public Map<String, PoloniexDepth> getAllPoloniexDepths(int depth) throws IOException {
-
-    String command = "returnOrderBook";
-    return poloniex.getAllOrderBooks(command, "all", depth);
-  }
-
-  public PoloniexPublicTrade[] getPoloniexPublicTrades(CurrencyPair currencyPair)
+  public ArrayList<ArrayList<Object>> getCandlestickChartData(CurrencyPair currencyPair, long start, long end, String period, int limit)
       throws IOException {
-
-    String command = "returnTradeHistory";
-    String pairString = PoloniexUtils.toPairString(currencyPair);
-    return poloniex.getTrades(command, pairString, null, null);
-  }
-
-  public PoloniexPublicTrade[] getPoloniexPublicTrades(
-      CurrencyPair currencyPair, Long startTime, Long endTime) throws IOException {
-
-    String command = "returnTradeHistory";
-    String pairString = PoloniexUtils.toPairString(currencyPair);
-    return poloniex.getTrades(command, pairString, startTime, endTime);
-  }
-
-  public PoloniexChartData[] getPoloniexChartData(
-      CurrencyPair currencyPair, Long startTime, Long endTime, PoloniexChartDataPeriodType period)
-      throws IOException {
-
-    String command = "returnChartData";
-    String pairString = PoloniexUtils.toPairString(currencyPair);
-    return poloniex.getChartData(command, pairString, startTime, endTime, period.getPeriodInSecs());
+    try {
+      return poloniex.getHistoryCandles(
+          PoloniexUtils.toPairString(currencyPair), start, end, period, limit);
+    } catch (PoloniexException e) {
+      throw PoloniexErrorAdapter.adapt(e);
+    }
   }
 }

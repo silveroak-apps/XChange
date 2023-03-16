@@ -34,7 +34,7 @@ import si.mazi.rescu.SynchronizedValueFactory;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 public interface PoloniexAuthenticated {
-
+// need to migrate to new API
   @POST
   @FormParam("command")
   HashMap<String, PoloniexBalance> returnCompleteBalances(
