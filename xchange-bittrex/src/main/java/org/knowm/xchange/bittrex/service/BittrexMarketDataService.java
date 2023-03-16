@@ -1,27 +1,30 @@
 package org.knowm.xchange.bittrex.service;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.text.ParseException;
+import java.util.*;
+
+import lombok.SneakyThrows;
 import org.knowm.xchange.bittrex.BittrexAdapters;
 import org.knowm.xchange.bittrex.BittrexAuthenticated;
 import org.knowm.xchange.bittrex.BittrexErrorAdapter;
 import org.knowm.xchange.bittrex.BittrexExchange;
 import org.knowm.xchange.bittrex.BittrexUtils;
 import org.knowm.xchange.bittrex.dto.BittrexException;
-import org.knowm.xchange.bittrex.dto.marketdata.BittrexMarketSummary;
-import org.knowm.xchange.bittrex.dto.marketdata.BittrexTicker;
-import org.knowm.xchange.bittrex.dto.marketdata.BittrexTrade;
+import org.knowm.xchange.bittrex.dto.marketdata.*;
 import org.knowm.xchange.client.ResilienceRegistries;
 import org.knowm.xchange.currency.CurrencyPair;
+import org.knowm.xchange.dto.marketdata.CandleStickData;
 import org.knowm.xchange.dto.marketdata.OrderBook;
 import org.knowm.xchange.dto.marketdata.Ticker;
 import org.knowm.xchange.dto.marketdata.Trades;
+import org.knowm.xchange.exceptions.NotYetImplementedForExchangeException;
 import org.knowm.xchange.service.marketdata.MarketDataService;
 import org.knowm.xchange.service.marketdata.params.CurrencyPairsParam;
 import org.knowm.xchange.service.marketdata.params.Params;
+import org.knowm.xchange.service.trade.params.CandleStickDataParams;
+import org.knowm.xchange.service.trade.params.DefaultCandleStickParam;
+import org.knowm.xchange.service.trade.params.DefaultCandleStickParamWithLimit;
 
 /**
  * Implementation of the market data service for Bittrex
@@ -105,5 +108,25 @@ public class BittrexMarketDataService extends BittrexMarketDataServiceRaw
     } catch (BittrexException e) {
       throw BittrexErrorAdapter.adapt(e);
     }
+  }
+
+  @SneakyThrows
+  @Override
+  public CandleStickData getCandleStickData(CurrencyPair currencyPair, CandleStickDataParams params) throws IOException {
+    if (!(params instanceof DefaultCandleStickParam)) {
+      throw new NotYetImplementedForExchangeException("Only DefaultCandleStickParam is supported");
+    }
+    DefaultCandleStickParam defaultCandleStickParam = (DefaultCandleStickParam) params;
+    KlineInterval periodType =
+            KlineInterval.getPeriodTypeFromSecs(defaultCandleStickParam.getPeriodInSecs());
+    if (periodType == null) {
+      throw new NotYetImplementedForExchangeException("Only discrete period values are supported;" +
+              Arrays.toString(KlineInterval.getSupportedPeriodsInSecs()));
+    }
+
+    List<BittrexCandle> bittrexKlines = getBittrexCandles ( BittrexAdapters.adaptToSymbolFromCurrencyPair(currencyPair) ,
+            periodType.code());
+    return BittrexAdapters.adaptBitstampCandleStickData(bittrexKlines, currencyPair, periodType);
+
   }
 }

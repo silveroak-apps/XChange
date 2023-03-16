@@ -4,6 +4,8 @@ import static org.knowm.xchange.bittrex.BittrexConstants.OFFLINE;
 import static org.knowm.xchange.bittrex.BittrexConstants.ONLINE;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -16,13 +18,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.apache.commons.lang3.time.DateUtils;
 import org.knowm.xchange.bittrex.dto.account.BittrexBalance;
-import org.knowm.xchange.bittrex.dto.marketdata.BittrexCurrency;
-import org.knowm.xchange.bittrex.dto.marketdata.BittrexLevel;
-import org.knowm.xchange.bittrex.dto.marketdata.BittrexMarketSummary;
-import org.knowm.xchange.bittrex.dto.marketdata.BittrexSymbol;
-import org.knowm.xchange.bittrex.dto.marketdata.BittrexTicker;
-import org.knowm.xchange.bittrex.dto.marketdata.BittrexTrade;
+import org.knowm.xchange.bittrex.dto.marketdata.*;
 import org.knowm.xchange.bittrex.dto.trade.BittrexOrder;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.currency.CurrencyPair;
@@ -31,9 +29,7 @@ import org.knowm.xchange.dto.Order.OrderType;
 import org.knowm.xchange.dto.account.Balance;
 import org.knowm.xchange.dto.account.Fee;
 import org.knowm.xchange.dto.account.Wallet;
-import org.knowm.xchange.dto.marketdata.Ticker;
-import org.knowm.xchange.dto.marketdata.Trade;
-import org.knowm.xchange.dto.marketdata.Trades;
+import org.knowm.xchange.dto.marketdata.*;
 import org.knowm.xchange.dto.marketdata.Trades.TradeSortType;
 import org.knowm.xchange.dto.meta.CurrencyMetaData;
 import org.knowm.xchange.dto.meta.ExchangeMetaData;
@@ -55,6 +51,12 @@ public final class BittrexAdapters {
     Currency baseSymbol = bittrexSymbol.getBaseCurrencySymbol();
     Currency counterSymbol = bittrexSymbol.getQuoteCurrencySymbol();
     return new CurrencyPair(baseSymbol, counterSymbol);
+  }
+
+  public static String adaptToSymbolFromCurrencyPair(CurrencyPair currencyPair) {
+    Currency baseSymbol = currencyPair.getBase();
+    Currency counterSymbol = currencyPair.getCounter();
+    return baseSymbol + "-" + counterSymbol;
   }
 
   public static List<LimitOrder> adaptOpenOrders(List<BittrexOrder> bittrexOpenOrders) {
@@ -299,6 +301,25 @@ public final class BittrexAdapters {
 
   private BittrexAdapters() {
     throw new AssertionError();
+  }
+
+  //Date is in formate 2023-02-13T09:00:00Z
+  public static CandleStickData adaptBitstampCandleStickData(List<BittrexCandle> bittrexKlines,
+                                                             CurrencyPair currencyPair,
+                                                             KlineInterval periodType) throws ParseException {
+    SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    List<CandleStick> candleSticks = new ArrayList<>();
+    for (BittrexCandle bittrexCandle : bittrexKlines) {
+        candleSticks.add(
+                new CandleStick.Builder().open(bittrexCandle.getOpen())
+                        .close(bittrexCandle.getClose())
+                        .high(bittrexCandle.getHigh())
+                        .low(bittrexCandle.getLow())
+                        .volume(bittrexCandle.getVolume())
+                        .timestamp(DateUtils.addMilliseconds(sf.parse(bittrexCandle.getStartsAt()), periodType.getMillis().intValue() -1))
+                        .build());
+    }
+    return new CandleStickData(currencyPair, candleSticks);
   }
 
   @Data

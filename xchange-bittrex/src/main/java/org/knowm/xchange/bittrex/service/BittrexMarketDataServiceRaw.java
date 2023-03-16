@@ -7,16 +7,8 @@ import java.io.IOException;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.knowm.xchange.bittrex.BittrexAdapters;
-import org.knowm.xchange.bittrex.BittrexAuthenticated;
-import org.knowm.xchange.bittrex.BittrexExchange;
-import org.knowm.xchange.bittrex.BittrexUtils;
-import org.knowm.xchange.bittrex.dto.marketdata.BittrexCurrency;
-import org.knowm.xchange.bittrex.dto.marketdata.BittrexDepth;
-import org.knowm.xchange.bittrex.dto.marketdata.BittrexMarketSummary;
-import org.knowm.xchange.bittrex.dto.marketdata.BittrexSymbol;
-import org.knowm.xchange.bittrex.dto.marketdata.BittrexTicker;
-import org.knowm.xchange.bittrex.dto.marketdata.BittrexTrade;
+import org.knowm.xchange.bittrex.*;
+import org.knowm.xchange.bittrex.dto.marketdata.*;
 import org.knowm.xchange.client.ResilienceRegistries;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.Order;
@@ -106,6 +98,14 @@ public class BittrexMarketDataServiceRaw extends BittrexBaseService {
         .call();
   }
 
+  public List<BittrexCandle> getBittrexCandles(String pair, String tickInterval)
+      throws IOException {
+    return decorateApiCall(
+            () -> bittrexAuthenticated.getCandles(pair, tickInterval))
+        .withRetry(retry("getCandles"))
+        .withRateLimiter(rateLimiter(PUBLIC_ENDPOINTS_RATE_LIMITER))
+        .call();
+  }
   @AllArgsConstructor
   @Getter
   public static class SequencedOrderBook {
