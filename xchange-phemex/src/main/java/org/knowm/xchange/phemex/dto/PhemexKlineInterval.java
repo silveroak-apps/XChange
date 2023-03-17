@@ -1,4 +1,4 @@
-package org.knowm.xchange.cryptodotcom.dto;
+package org.knowm.xchange.phemex.dto;
 
 import static java.util.concurrent.TimeUnit.*;
 

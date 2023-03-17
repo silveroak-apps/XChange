@@ -1,9 +1,9 @@
-package org.knowm.xchange.cryptodotcom.service;
+package org.knowm.xchange.phemex.service;
 
 import org.knowm.xchange.Exchange;
 
-import org.knowm.xchange.cryptodotcom.PhemexAdapters;
-import org.knowm.xchange.cryptodotcom.dto.PhemexKlineInterval;
+import org.knowm.xchange.phemex.PhemexAdapters;
+import org.knowm.xchange.phemex.dto.PhemexKlineInterval;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.marketdata.CandleStickData;
 import org.knowm.xchange.exceptions.NotYetImplementedForExchangeException;

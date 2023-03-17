@@ -1,6 +1,6 @@
-package org.knowm.xchange.cryptodotcom;
+package org.knowm.xchange.phemex;
 
-import org.knowm.xchange.cryptodotcom.dto.PhemexException;
+import org.knowm.xchange.phemex.dto.PhemexException;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

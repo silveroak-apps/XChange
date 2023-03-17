@@ -1,9 +1,9 @@
-package org.knowm.xchange.cryptodotcom;
+package org.knowm.xchange.phemex;
 
 import org.knowm.xchange.BaseExchange;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.ExchangeSpecification;
-import org.knowm.xchange.cryptodotcom.service.PhemexMarketDataService;
+import org.knowm.xchange.phemex.service.PhemexMarketDataService;
 
 
 /** @author jamespedwards42 */

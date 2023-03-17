@@ -1,6 +1,6 @@
-package org.knowm.xchange.cryptodotcom;
+package org.knowm.xchange.phemex;
 
-import org.knowm.xchange.cryptodotcom.dto.PhemexKlineInterval;
+import org.knowm.xchange.phemex.dto.PhemexKlineInterval;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.marketdata.CandleStick;
 import org.knowm.xchange.dto.marketdata.CandleStickData;

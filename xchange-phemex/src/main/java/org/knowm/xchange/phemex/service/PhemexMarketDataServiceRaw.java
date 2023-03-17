@@ -1,8 +1,8 @@
-package org.knowm.xchange.cryptodotcom.service;
+package org.knowm.xchange.phemex.service;
 
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.client.ExchangeRestProxyBuilder;
-import org.knowm.xchange.cryptodotcom.Phemex;
+import org.knowm.xchange.phemex.Phemex;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
