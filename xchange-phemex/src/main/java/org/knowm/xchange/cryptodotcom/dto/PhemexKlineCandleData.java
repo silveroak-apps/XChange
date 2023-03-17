@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 @Getter
 @Setter
-public class KlineCandleData {
+public class PhemexKlineCandleData {
     public int code;
     public String method;
     public Result result;

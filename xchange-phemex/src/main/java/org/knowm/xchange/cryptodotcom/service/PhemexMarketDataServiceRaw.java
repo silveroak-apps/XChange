@@ -2,24 +2,24 @@ package org.knowm.xchange.cryptodotcom.service;
 
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.client.ExchangeRestProxyBuilder;
-import org.knowm.xchange.cryptodotcom.Cryptodotcom;
+import org.knowm.xchange.cryptodotcom.Phemex;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
 
 /** @author jamespedwards42 */
-class CryptodotcomMarketDataServiceRaw {
+class PhemexMarketDataServiceRaw {
 
-  protected final Cryptodotcom cryptodotcom;
+  protected final Phemex phemex;
   /**
    * Constructor
    *
    * @param exchange
    */
-  public CryptodotcomMarketDataServiceRaw(Exchange exchange) {
-    cryptodotcom =
+  public PhemexMarketDataServiceRaw(Exchange exchange) {
+    phemex =
             ExchangeRestProxyBuilder.forInterface(
-                            Cryptodotcom.class, exchange.getExchangeSpecification())
+                            Phemex.class, exchange.getExchangeSpecification())
                     .build();
   }
 
@@ -32,8 +32,8 @@ class CryptodotcomMarketDataServiceRaw {
    * @see <a
    *     href="https://coinbase.com/api/doc/1.0/prices/exchange_rates.html">coinbase.com/api/doc/1.0/prices/exchange_rates.html</a>
    */
-  public LinkedHashMap getCoinbaseHistoricalCandles(String productId, String timeframe) throws IOException {
+  public LinkedHashMap getCoinbaseHistoricalCandles(String productId,Long start, Long from, Integer timeframe) throws IOException {
 
-    return cryptodotcom.getHistoricalCandles(productId,  timeframe);
+    return phemex.getHistoricalCandles(productId,  start, from, timeframe);
   }
 }

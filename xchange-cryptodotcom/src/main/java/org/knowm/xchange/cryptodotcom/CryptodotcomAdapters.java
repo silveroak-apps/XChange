@@ -1,6 +1,5 @@
 package org.knowm.xchange.cryptodotcom;
 
-import org.knowm.xchange.cryptodotcom.dto.KlineCandleData;
 import org.knowm.xchange.cryptodotcom.dto.KlineInterval;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.marketdata.CandleStick;

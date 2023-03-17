@@ -2,8 +2,8 @@ package org.knowm.xchange.cryptodotcom.service;
 
 import org.knowm.xchange.Exchange;
 
-import org.knowm.xchange.cryptodotcom.CryptodotcomAdapters;
-import org.knowm.xchange.cryptodotcom.dto.KlineInterval;
+import org.knowm.xchange.cryptodotcom.PhemexAdapters;
+import org.knowm.xchange.cryptodotcom.dto.PhemexKlineInterval;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.marketdata.CandleStickData;
 import org.knowm.xchange.exceptions.NotYetImplementedForExchangeException;
@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 
 /** @author jamespedwards42 */
-public class CryptodotcomMarketDataService extends CryptodotcomMarketDataServiceRaw
+public class PhemexMarketDataService extends PhemexMarketDataServiceRaw
     implements MarketDataService {
 
   /**
@@ -24,7 +24,7 @@ public class CryptodotcomMarketDataService extends CryptodotcomMarketDataService
    *
    * @param exchange
    */
-  public CryptodotcomMarketDataService(Exchange exchange) {
+  public PhemexMarketDataService(Exchange exchange) {
 
     super(exchange);
   }
@@ -38,15 +38,17 @@ public class CryptodotcomMarketDataService extends CryptodotcomMarketDataService
       throw new NotYetImplementedForExchangeException("Only DefaultCandleStickParam is supported");
     }
     DefaultCandleStickParam defaultCandleStickParam = (DefaultCandleStickParam) params;
-    KlineInterval periodType =
-            KlineInterval.getPeriodTypeFromSecs(defaultCandleStickParam.getPeriodInSecs());
+    PhemexKlineInterval periodType =
+            PhemexKlineInterval.getPeriodTypeFromSecs(defaultCandleStickParam.getPeriodInSecs());
     if (periodType == null) {
       throw new NotYetImplementedForExchangeException("Only discrete period values are supported;" +
-              Arrays.toString(KlineInterval.getSupportedPeriodsInSecs()));
+              Arrays.toString(PhemexKlineInterval.getSupportedPeriodsInSecs()));
     }
 
-    LinkedHashMap klines = getCoinbaseHistoricalCandles(CryptodotcomAdapters.convertToCryptodotomSymbol(currencyPair.toString()),
-            KlineInterval.getPeriodTypeFromSecs(defaultCandleStickParam.getPeriodInSecs()).code());
-    return CryptodotcomAdapters.adaptCryptodotcomCandleStickData(klines, currencyPair, periodType);
+    LinkedHashMap klines = getCoinbaseHistoricalCandles(PhemexAdapters.convertToCryptodotomSymbol(currencyPair.toString()),
+            defaultCandleStickParam.getStartDate().getTime(),
+            defaultCandleStickParam.getEndDate().getTime(),
+            PhemexKlineInterval.getPeriodTypeFromSecs(defaultCandleStickParam.getPeriodInSecs()).code());
+    return PhemexAdapters.adaptCryptodotcomCandleStickData(klines, currencyPair, periodType);
   }
 }

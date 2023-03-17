@@ -1,13 +1,9 @@
 package org.knowm.xchange.cryptodotcom;
 
-import org.knowm.xchange.cryptodotcom.dto.KlineCandleData;
-
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 /** @author jamespedwards42 */
 @Path("v2")

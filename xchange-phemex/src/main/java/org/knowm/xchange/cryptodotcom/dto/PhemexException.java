@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import si.mazi.rescu.HttpStatusExceptionSupport;
 
 @SuppressWarnings("serial")
-public class CryptodotcomException extends HttpStatusExceptionSupport {
+public class PhemexException extends HttpStatusExceptionSupport {
 
-  public CryptodotcomException(
+  public PhemexException(
           @JsonProperty("error") String message, @JsonProperty("success") Boolean success) {
     super(message);
   }
