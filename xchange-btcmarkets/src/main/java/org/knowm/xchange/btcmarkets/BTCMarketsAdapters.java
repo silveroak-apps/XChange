@@ -2,13 +2,7 @@ package org.knowm.xchange.btcmarkets;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.knowm.xchange.btcmarkets.dto.account.BTCMarketsBalance;
 import org.knowm.xchange.btcmarkets.dto.account.BTCMarketsFundtransfer;
@@ -18,6 +12,8 @@ import org.knowm.xchange.btcmarkets.dto.marketdata.BTCMarketsTicker;
 import org.knowm.xchange.btcmarkets.dto.trade.BTCMarketsOrder;
 import org.knowm.xchange.btcmarkets.dto.trade.BTCMarketsOrders;
 import org.knowm.xchange.btcmarkets.dto.trade.BTCMarketsUserTrade;
+import org.knowm.xchange.btcmarkets.dto.v3.marketdata.BTCCandleStick;
+import org.knowm.xchange.btcmarkets.dto.v3.marketdata.BTCMarketsKlineInterval;
 import org.knowm.xchange.btcmarkets.dto.v3.marketdata.BTCMarketsTrade;
 import org.knowm.xchange.btcmarkets.dto.v3.trade.BTCMarketsTradeHistoryResponse;
 import org.knowm.xchange.currency.Currency;
@@ -26,10 +22,7 @@ import org.knowm.xchange.dto.Order;
 import org.knowm.xchange.dto.account.Balance;
 import org.knowm.xchange.dto.account.FundingRecord;
 import org.knowm.xchange.dto.account.Wallet;
-import org.knowm.xchange.dto.marketdata.OrderBook;
-import org.knowm.xchange.dto.marketdata.Ticker;
-import org.knowm.xchange.dto.marketdata.Trade;
-import org.knowm.xchange.dto.marketdata.Trades;
+import org.knowm.xchange.dto.marketdata.*;
 import org.knowm.xchange.dto.marketdata.Trades.TradeSortType;
 import org.knowm.xchange.dto.trade.LimitOrder;
 import org.knowm.xchange.dto.trade.OpenOrders;
@@ -38,6 +31,8 @@ import org.knowm.xchange.dto.trade.UserTrades;
 import org.knowm.xchange.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static org.knowm.xchange.btcmarkets.BTCUtils.toLongDate;
 
 public final class BTCMarketsAdapters {
 
@@ -282,5 +277,24 @@ public final class BTCMarketsAdapters {
     }
 
     return new Trades(trades);
+  }
+
+  public static CandleStickData adaptCandleStickData(List<BTCCandleStick> candleSticks, CurrencyPair currencyPair, BTCMarketsKlineInterval interval) {
+    CandleStickData candleStickData = null;
+    if (!candleSticks.isEmpty()) {
+      List<CandleStick> candleStickList = new ArrayList<>();
+      for (BTCCandleStick candleStick : candleSticks) {
+        candleStickList.add(new CandleStick.Builder()
+                .timestamp(new Date(toLongDate(candleStick.getTimestamp()) + interval.getMillis() - 1))
+                .open(new BigDecimal(candleStick.getOpenPrice()))
+                .high(new BigDecimal(candleStick.getHighPrice()))
+                .low(new BigDecimal(candleStick.getLowPrice()))
+                .close(new BigDecimal(candleStick.getClosePrice()))
+                .volume(new BigDecimal(candleStick.getVolume()))
+                .build());
+      }
+      candleStickData = new CandleStickData(currencyPair, candleStickList);
+    }
+    return candleStickData;
   }
 }
