@@ -117,7 +117,7 @@ public class HitbtcMarketDataServiceRaw extends HitbtcBaseService {
   }
 
   public List<HitbtcCandle> getHitbtcCandles(
-      CurrencyPair currencyPair, int limit, String period, Date from, Date till, String sort)
+      CurrencyPair currencyPair, int limit, String period, String from, String till, String sort)
       throws IOException {
 
     return hitbtc.getHitbtcOHLC(

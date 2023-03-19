@@ -6,19 +6,19 @@ import java.math.BigDecimal;
 
 public class HitbtcCandle {
 
-  private String timestamp;
+  private final String timestamp;
 
-  private BigDecimal open;
+  private final BigDecimal open;
 
-  private BigDecimal close;
+  private final BigDecimal close;
 
-  private BigDecimal min;
+  private final BigDecimal min;
 
-  private BigDecimal max;
+  private final BigDecimal max;
 
-  private BigDecimal volume;
+  private final BigDecimal volume;
 
-  private BigDecimal volumeQuote;
+  private final BigDecimal volumeQuote;
 
   @JsonCreator
   public HitbtcCandle(

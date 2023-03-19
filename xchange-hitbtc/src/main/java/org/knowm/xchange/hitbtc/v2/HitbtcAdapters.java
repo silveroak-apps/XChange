@@ -16,10 +16,7 @@ import org.knowm.xchange.dto.account.Balance;
 import org.knowm.xchange.dto.account.FundingRecord;
 import org.knowm.xchange.dto.account.FundingRecord.Type;
 import org.knowm.xchange.dto.account.Wallet;
-import org.knowm.xchange.dto.marketdata.OrderBook;
-import org.knowm.xchange.dto.marketdata.Ticker;
-import org.knowm.xchange.dto.marketdata.Trade;
-import org.knowm.xchange.dto.marketdata.Trades;
+import org.knowm.xchange.dto.marketdata.*;
 import org.knowm.xchange.dto.meta.CurrencyMetaData;
 import org.knowm.xchange.dto.meta.ExchangeMetaData;
 import org.knowm.xchange.dto.meta.FeeTier;
@@ -28,20 +25,11 @@ import org.knowm.xchange.dto.trade.LimitOrder;
 import org.knowm.xchange.dto.trade.OpenOrders;
 import org.knowm.xchange.dto.trade.UserTrade;
 import org.knowm.xchange.dto.trade.UserTrades;
-import org.knowm.xchange.hitbtc.v2.dto.HitbtcBalance;
-import org.knowm.xchange.hitbtc.v2.dto.HitbtcLimitOrder;
-import org.knowm.xchange.hitbtc.v2.dto.HitbtcOrder;
-import org.knowm.xchange.hitbtc.v2.dto.HitbtcOrderBook;
-import org.knowm.xchange.hitbtc.v2.dto.HitbtcOrderLimit;
-import org.knowm.xchange.hitbtc.v2.dto.HitbtcOwnTrade;
-import org.knowm.xchange.hitbtc.v2.dto.HitbtcSide;
-import org.knowm.xchange.hitbtc.v2.dto.HitbtcSymbol;
-import org.knowm.xchange.hitbtc.v2.dto.HitbtcTicker;
-import org.knowm.xchange.hitbtc.v2.dto.HitbtcTrade;
-import org.knowm.xchange.hitbtc.v2.dto.HitbtcTransaction;
-import org.knowm.xchange.hitbtc.v2.dto.HitbtcUserTrade;
+import org.knowm.xchange.hitbtc.v2.dto.*;
 import org.knowm.xchange.hitbtc.v2.service.HitbtcMarketDataServiceRaw;
 import org.knowm.xchange.instrument.Instrument;
+
+import static org.knowm.xchange.hitbtc.v2.HitbtcUtil.toLongDate;
 
 public class HitbtcAdapters {
 
@@ -398,5 +386,24 @@ public class HitbtcAdapters {
       default:
         throw new RuntimeException("Unknown HitBTC transaction status: " + status);
     }
+  }
+
+  public static CandleStickData adaptCandleStickData(List<HitbtcCandle> candles, CurrencyPair currencyPair, HitbtcKlineInterval interval) {
+    CandleStickData candleStickData = null;
+    if (!candles.isEmpty()) {
+      List<CandleStick> candleStickList = new ArrayList<>();
+      for (HitbtcCandle candleStick : candles) {
+        candleStickList.add(new CandleStick.Builder()
+                .timestamp(new Date(toLongDate(candleStick.getTimestamp()) + interval.getMillis() - 1))
+                .open(candleStick.getOpen())
+                .high(candleStick.getMax())
+                .low(candleStick.getMin())
+                .close(candleStick.getClose())
+                .volume(candleStick.getVolume())
+                .build());
+      }
+      candleStickData = new CandleStickData(currencyPair, candleStickList);
+    }
+    return candleStickData;
   }
 }

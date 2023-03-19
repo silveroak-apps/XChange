@@ -26,21 +26,21 @@ import org.knowm.xchange.hitbtc.v2.service.HitbtcTimeInForce;
 import si.mazi.rescu.HttpStatusIOException;
 
 /** Version 2 of HitBtc API. See https://api.hitbtc.com/api/2/explore/ */
-@Path("/api/2/")
-public interface HitbtcAuthenticated extends Hitbtc {
+@Path("/api/")
+public interface HitbtcAuthenticated extends HitbtcV3 {
 
   /** ************************* Account APIs ***************************** */
   @GET
-  @Path("account/balance")
+  @Path("2/account/balance")
   List<HitbtcBalance> getMainBalance() throws IOException, HitbtcException;
 
   @GET
-  @Path("account/crypto/address/{currency}")
+  @Path("2/account/crypto/address/{currency}")
   HitbtcAddress getHitbtcDepositAddress(@PathParam("currency") String currency)
       throws IOException, HitbtcException;
 
   @GET
-  @Path("account/transactions")
+  @Path("2/account/transactions")
   List<HitbtcTransaction> transactions(
       @QueryParam("currency") String currency,
       @QueryParam("sort") String sort,
@@ -52,7 +52,7 @@ public interface HitbtcAuthenticated extends Hitbtc {
       throws HitbtcException, HttpStatusIOException;
 
   @POST
-  @Path("account/transfer")
+  @Path("2/account/transfer")
   HitbtcInternalTransferResponse transferToTrading(
       @FormParam("amount") BigDecimal amount,
       @FormParam("currency") String currency,
@@ -60,7 +60,7 @@ public interface HitbtcAuthenticated extends Hitbtc {
       throws IOException, HitbtcException;
 
   @POST
-  @Path("account/crypto/withdraw")
+  @Path("2/account/crypto/withdraw")
   Map payout(
       @FormParam("amount") BigDecimal amount,
       @FormParam("currency") String currency,
@@ -73,11 +73,11 @@ public interface HitbtcAuthenticated extends Hitbtc {
 
   // TODO add query params
   @GET
-  @Path("order")
+  @Path("2/order")
   List<HitbtcOrder> getHitbtcActiveOrders() throws IOException, HitbtcException;
 
   @POST
-  @Path("order")
+  @Path("2/order")
   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
   HitbtcOrder postHitbtcNewOrder(
       @FormParam("clientOrderId") String clientOrderId,
@@ -90,7 +90,7 @@ public interface HitbtcAuthenticated extends Hitbtc {
       throws IOException, HitbtcException;
 
   @PATCH
-  @Path("order/{clientOrderId}")
+  @Path("2/order/{clientOrderId}")
   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
   HitbtcOrder updateHitbtcOrder(
       @PathParam("clientOrderId") String clientOrderId,
@@ -100,23 +100,23 @@ public interface HitbtcAuthenticated extends Hitbtc {
       throws IOException, HitbtcException;
 
   @DELETE
-  @Path("order")
+  @Path("2/order")
   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
   List<HitbtcOrder> cancelAllOrders(@FormParam("symbol") String symbol)
       throws IOException, HitbtcException;
 
   @DELETE
-  @Path("order/{clientOrderId}")
+  @Path("2/order/{clientOrderId}")
   HitbtcOrder cancelSingleOrder(@PathParam("clientOrderId") String clientOrderId)
       throws IOException, HitbtcException;
 
   @GET
-  @Path("trading/balance")
+  @Path("2/trading/balance")
   List<HitbtcBalance> getTradingBalance() throws IOException, HitbtcException;
 
   /** ******************* Trading History APIs ***************************** */
   @GET
-  @Path("history/trades")
+  @Path("2/history/trades")
   List<HitbtcOwnTrade> getHitbtcTrades(
       @QueryParam("symbol") String symbol,
       @QueryParam("sort") String sort,
@@ -137,7 +137,7 @@ public interface HitbtcAuthenticated extends Hitbtc {
    * @throws HitbtcException
    */
   @GET
-  @Path("history/order")
+  @Path("2/history/order")
   List<HitbtcOrder> getHitbtcRecentOrders() throws IOException, HitbtcException;
 
   /**
@@ -150,13 +150,13 @@ public interface HitbtcAuthenticated extends Hitbtc {
    * @throws HitbtcException throw in case internal HITBTC problems
    */
   @GET
-  @Path("history/order")
+  @Path("2/history/order")
   List<HitbtcOrder> getHitbtcOrder(
       @QueryParam("symbol") String symbol, @QueryParam("clientOrderId") String clientOrderId)
       throws IOException, HitbtcException;
 
   @GET
-  @Path("/history/order/{id}/trades")
+  @Path("2/history/order/{id}/trades")
   List<HitbtcOwnTrade> getHistorialTradesByOrder(@PathParam("id") String orderId)
       throws IOException, HitbtcException;
 }
