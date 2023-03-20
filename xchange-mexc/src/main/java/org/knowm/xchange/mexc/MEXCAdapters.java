@@ -5,9 +5,13 @@ import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.Order;
 import org.knowm.xchange.dto.account.Balance;
 import org.knowm.xchange.dto.account.Wallet;
+import org.knowm.xchange.dto.marketdata.CandleStick;
+import org.knowm.xchange.dto.marketdata.CandleStickData;
 import org.knowm.xchange.dto.trade.LimitOrder;
 import org.knowm.xchange.instrument.Instrument;
 import org.knowm.xchange.mexc.dto.account.MEXCBalance;
+import org.knowm.xchange.mexc.dto.marketdata.KlineIntervalType;
+import org.knowm.xchange.mexc.dto.marketdata.MEXCCandleStick;
 import org.knowm.xchange.mexc.dto.trade.MEXCOrder;
 import org.knowm.xchange.mexc.dto.trade.MEXCOrderRequestPayload;
 
@@ -82,4 +86,23 @@ public class MEXCAdapters {
     return dealAmount.divide(dealQuantity, RoundingMode.HALF_EVEN);
   }
 
+  public static CandleStickData adaptCandleStickData(List<MEXCCandleStick> historyCandle,
+                                                     CurrencyPair currencyPair, KlineIntervalType periodType) {
+    CandleStickData candleStickData = null;
+    if (!historyCandle.isEmpty()) {
+      List<CandleStick> candleStickList = new ArrayList<>();
+      for (MEXCCandleStick candleStick : historyCandle) {
+        candleStickList.add(new CandleStick.Builder()
+                .timestamp(new Date(candleStick.getClosetime()))
+                .open(new BigDecimal(candleStick.getOpenPrice()))
+                .high(new BigDecimal(candleStick.getHighPrice()))
+                .low(new BigDecimal(candleStick.getLowPrice()))
+                .close(new BigDecimal(candleStick.getClosePrice()))
+                .volume(new BigDecimal(candleStick.getVolume()))
+                .build());
+      }
+      candleStickData = new CandleStickData(currencyPair, candleStickList);
+    }
+    return candleStickData;
+  }
 }

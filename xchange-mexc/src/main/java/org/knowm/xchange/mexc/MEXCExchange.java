@@ -20,9 +20,11 @@ public class MEXCExchange extends BaseExchange implements Exchange {
     @Override
     public ExchangeSpecification getDefaultExchangeSpecification() {
         ExchangeSpecification exchangeSpecification = new ExchangeSpecification(this.getClass());
-        exchangeSpecification.setSslUri("https://www.mexc.com");
+        exchangeSpecification.setSslUri("https://api.mexc.com");
         exchangeSpecification.setHost("mexc.com");
         exchangeSpecification.setPort(80);
+        exchangeSpecification.setApiKey("<<need_to_update>>");
+        exchangeSpecification.setSecretKey("<<need_to_update>>");
         exchangeSpecification.setExchangeName("MEXC");
         exchangeSpecification.setExchangeDescription("MEXC");
         return exchangeSpecification;

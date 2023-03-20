@@ -14,9 +14,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-@Path("/open/api/v2")
+@Path("api/v3/")
 @Produces(MediaType.APPLICATION_JSON)
-public interface MEXCAuthenticated {
+public interface MEXCAuthenticated extends MEXC {
 
   @GET
   @Path("/account/info")

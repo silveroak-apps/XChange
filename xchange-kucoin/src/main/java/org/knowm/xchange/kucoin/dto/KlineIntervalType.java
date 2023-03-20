@@ -15,22 +15,22 @@ import static java.util.concurrent.TimeUnit.MINUTES;
  * <p>See https://docs.kucoin.com/#get-klines for more info kline fetch.
  */
 public enum KlineIntervalType {
-  min1("1min", MINUTES.toSeconds(1)),
-  min3("3min", MINUTES.toSeconds(3)),
-  min5("5min", MINUTES.toSeconds(5)),
-  min15("15min", MINUTES.toSeconds(15)),
-  min30("30min", MINUTES.toSeconds(30)),
+  m1("1min", MINUTES.toSeconds(1)),
+  m3("3min", MINUTES.toSeconds(3)),
+  m5("5min", MINUTES.toSeconds(5)),
+  m15("15min", MINUTES.toSeconds(15)),
+  m30("30min", MINUTES.toSeconds(30)),
 
-  hour1("1hour", HOURS.toSeconds(1)),
-  hour2("2hour", HOURS.toSeconds(2)),
+  h1("1hour", HOURS.toSeconds(1)),
+  h2("2hour", HOURS.toSeconds(2)),
   hour4("4hour", HOURS.toSeconds(4)),
-  hour6("6hour", HOURS.toSeconds(6)),
-  hour8("8hour", HOURS.toSeconds(8)),
-  hour12("12hour", HOURS.toSeconds(12)),
+  h6("6hour", HOURS.toSeconds(6)),
+  h8("8hour", HOURS.toSeconds(8)),
+  h12("12hour", HOURS.toSeconds(12)),
 
-  day1("1day", DAYS.toSeconds(1)),
+  d1("1day", DAYS.toSeconds(1)),
 
-  week1("1week", DAYS.toSeconds(7));
+  w1("1week", DAYS.toSeconds(7));
 
   private final String code;
   private final Long seconds;
