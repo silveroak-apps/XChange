@@ -34,6 +34,7 @@ dependencies {
     api 'org.knowm.xchange:xchange-core:5.1.1-SNAPSHOT'
     api 'jakarta.ws.rs:jakarta.ws.rs-api:3.1.0'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation project(path: ':XChange:xchange-core')
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'com.github.tomakehurst:wiremock-jre8:2.35.0'
     testImplementation 'org.assertj:assertj-core:3.23.1'
