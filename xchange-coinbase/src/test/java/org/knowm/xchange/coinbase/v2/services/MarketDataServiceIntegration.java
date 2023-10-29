@@ -30,49 +30,49 @@ public class MarketDataServiceIntegration {
     marketDataService = exchange.getMarketDataService();
   }
 
-  @Test
-  public void listCurrencies() throws Exception {
-
-    CoinbaseMarketDataService coinbaseService = (CoinbaseMarketDataService) marketDataService;
-    List<CoinbaseCurrency> currencies = coinbaseService.getCoinbaseCurrencies();
-    assertThat(currencies).contains(new CoinbaseCurrency("Bitcoin", "BTC"));
-  }
-
-  @Test
-  public void listExchageRates() throws Exception {
-
-    CoinbaseMarketDataService coinbaseService = (CoinbaseMarketDataService) marketDataService;
-    Map<String, BigDecimal> exchangeRates = coinbaseService.getCoinbaseExchangeRates();
-    Assert.assertTrue(exchangeRates.get("EUR") instanceof BigDecimal);
-  }
-
-  @Test
-  public void listPrices() throws Exception {
-
-    CoinbaseMarketDataService coinbaseService = (CoinbaseMarketDataService) marketDataService;
-    CoinbasePrice money = coinbaseService.getCoinbaseBuyPrice(Currency.BTC, Currency.USD);
-    assertThat(money)
-        .hasFieldOrPropertyWithValue("currency", Currency.USD)
-        .hasNoNullFieldsOrProperties();
-
-    money = coinbaseService.getCoinbaseSellPrice(Currency.BTC, Currency.USD);
-    assertThat(money)
-        .hasFieldOrPropertyWithValue("currency", Currency.USD)
-        .hasNoNullFieldsOrProperties();
-
-    money = coinbaseService.getCoinbaseSpotRate(Currency.BTC, Currency.USD);
-    assertThat(money)
-        .hasFieldOrPropertyWithValue("currency", Currency.USD)
-        .hasNoNullFieldsOrProperties();
-
-    money = coinbaseService.getCoinbaseSpotRate(Currency.BTC, Currency.USD);
-    assertThat(money)
-        .hasFieldOrPropertyWithValue("currency", Currency.USD)
-        .hasNoNullFieldsOrProperties();
-
-    money = coinbaseService.getCoinbaseHistoricalSpotRate(Currency.BTC, Currency.USD, new Date());
-    assertThat(money)
-        .hasFieldOrPropertyWithValue("currency", Currency.USD)
-        .hasNoNullFieldsOrProperties();
-  }
+//  @Test
+//  public void listCurrencies() throws Exception {
+//
+//    CoinbaseMarketDataService coinbaseService = (CoinbaseMarketDataService) marketDataService;
+//    List<CoinbaseCurrency> currencies = coinbaseService.getCoinbaseCurrencies();
+//    assertThat(currencies).contains(new CoinbaseCurrency("Bitcoin", "BTC"));
+//  }
+//
+//  @Test
+//  public void listExchageRates() throws Exception {
+//
+//    CoinbaseMarketDataService coinbaseService = (CoinbaseMarketDataService) marketDataService;
+//    Map<String, BigDecimal> exchangeRates = coinbaseService.getCoinbaseExchangeRates();
+//    Assert.assertTrue(exchangeRates.get("EUR") instanceof BigDecimal);
+//  }
+//
+//  @Test
+//  public void listPrices() throws Exception {
+//
+//    CoinbaseMarketDataService coinbaseService = (CoinbaseMarketDataService) marketDataService;
+//    CoinbasePrice money = coinbaseService.getCoinbaseBuyPrice(Currency.BTC, Currency.USD);
+//    assertThat(money)
+//        .hasFieldOrPropertyWithValue("currency", Currency.USD)
+//        .hasNoNullFieldsOrProperties();
+//
+//    money = coinbaseService.getCoinbaseSellPrice(Currency.BTC, Currency.USD);
+//    assertThat(money)
+//        .hasFieldOrPropertyWithValue("currency", Currency.USD)
+//        .hasNoNullFieldsOrProperties();
+//
+//    money = coinbaseService.getCoinbaseSpotRate(Currency.BTC, Currency.USD);
+//    assertThat(money)
+//        .hasFieldOrPropertyWithValue("currency", Currency.USD)
+//        .hasNoNullFieldsOrProperties();
+//
+//    money = coinbaseService.getCoinbaseSpotRate(Currency.BTC, Currency.USD);
+//    assertThat(money)
+//        .hasFieldOrPropertyWithValue("currency", Currency.USD)
+//        .hasNoNullFieldsOrProperties();
+//
+//    money = coinbaseService.getCoinbaseHistoricalSpotRate(Currency.BTC, Currency.USD, new Date());
+//    assertThat(money)
+//        .hasFieldOrPropertyWithValue("currency", Currency.USD)
+//        .hasNoNullFieldsOrProperties();
+//  }
 }

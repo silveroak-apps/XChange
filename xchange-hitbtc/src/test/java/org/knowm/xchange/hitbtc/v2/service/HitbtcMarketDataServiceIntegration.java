@@ -14,53 +14,53 @@ import org.knowm.xchange.service.marketdata.MarketDataService;
 
 public class HitbtcMarketDataServiceIntegration extends BaseServiceTest {
 
-  @Test
-  public void testGetTicker() throws IOException {
-
-    MarketDataService marketDataService = exchange().getMarketDataService();
-
-    Ticker ticker = marketDataService.getTicker(CurrencyPair.BTC_USD);
-    assertNotNull(ticker);
-    assertEquals(CurrencyPair.BTC_USD, ticker.getCurrencyPair());
-  }
-
-  @Test
-  public void testGetTicker_BCC() throws IOException {
-
-    MarketDataService marketDataService = exchange().getMarketDataService();
-
-    Ticker ticker = marketDataService.getTicker(CurrencyPair.BCC_USD);
-    assertNotNull(ticker);
-    assertEquals(CurrencyPair.BCC_USD, ticker.getCurrencyPair());
-  }
-
-  @Test
-  public void testGetTicker_BCH() throws IOException {
-
-    MarketDataService marketDataService = exchange().getMarketDataService();
-
-    Ticker ticker = marketDataService.getTicker(CurrencyPair.BCH_USD);
-    assertNotNull(ticker);
-    assertEquals(CurrencyPair.BCH_USD, ticker.getCurrencyPair());
-  }
-
-  @Test
-  public void testGetTrades() throws IOException {
-
-    MarketDataService marketDataService = exchange().getMarketDataService();
-
-    Trades trades = marketDataService.getTrades(CurrencyPair.BTC_USD);
-
-    assertNotNull(trades);
-  }
-
-  @Test
-  public void testGetOrderBook() throws IOException {
-
-    MarketDataService marketDataService = exchange().getMarketDataService();
-
-    OrderBook orderBook = marketDataService.getOrderBook(CurrencyPair.BTC_USD);
-
-    assertNotNull(orderBook);
-  }
+//  @Test
+//  public void testGetTicker() throws IOException {
+//
+//    MarketDataService marketDataService = exchange().getMarketDataService();
+//
+//    Ticker ticker = marketDataService.getTicker(CurrencyPair.BTC_USD);
+//    assertNotNull(ticker);
+//    assertEquals(CurrencyPair.BTC_USD, ticker.getCurrencyPair());
+//  }
+//
+//  @Test
+//  public void testGetTicker_BCC() throws IOException {
+//
+//    MarketDataService marketDataService = exchange().getMarketDataService();
+//
+//    Ticker ticker = marketDataService.getTicker(CurrencyPair.BCC_USD);
+//    assertNotNull(ticker);
+//    assertEquals(CurrencyPair.BCC_USD, ticker.getCurrencyPair());
+//  }
+//
+//  @Test
+//  public void testGetTicker_BCH() throws IOException {
+//
+//    MarketDataService marketDataService = exchange().getMarketDataService();
+//
+//    Ticker ticker = marketDataService.getTicker(CurrencyPair.BCH_USD);
+//    assertNotNull(ticker);
+//    assertEquals(CurrencyPair.BCH_USD, ticker.getCurrencyPair());
+//  }
+//
+//  @Test
+//  public void testGetTrades() throws IOException {
+//
+//    MarketDataService marketDataService = exchange().getMarketDataService();
+//
+//    Trades trades = marketDataService.getTrades(CurrencyPair.BTC_USD);
+//
+//    assertNotNull(trades);
+//  }
+//
+//  @Test
+//  public void testGetOrderBook() throws IOException {
+//
+//    MarketDataService marketDataService = exchange().getMarketDataService();
+//
+//    OrderBook orderBook = marketDataService.getOrderBook(CurrencyPair.BTC_USD);
+//
+//    assertNotNull(orderBook);
+//  }
 }

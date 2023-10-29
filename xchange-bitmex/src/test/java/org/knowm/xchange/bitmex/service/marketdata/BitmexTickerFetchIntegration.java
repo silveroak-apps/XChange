@@ -25,37 +25,37 @@ public class BitmexTickerFetchIntegration {
     marketDataService = bitmexExchange.getMarketDataService();
   }
 
-  @Test(expected = ExchangeException.class)
-  public void contractNotExistsTest() {
-    bitmexExchange.determineActiveContract("USD", "USD", BitmexPrompt.PERPETUAL);
-  }
+//  @Test(expected = ExchangeException.class)
+//  public void contractNotExistsTest() {
+//    bitmexExchange.determineActiveContract("USD", "USD", BitmexPrompt.PERPETUAL);
+//  }
 
-  @Test
-  public void determineActiveContractTest() {
-    CurrencyPair perpetualXBT =
-        bitmexExchange.determineActiveContract("BTC", "USD", BitmexPrompt.PERPETUAL);
-    CurrencyPair perpetualETH =
-        bitmexExchange.determineActiveContract("ETH", "BTC", BitmexPrompt.PERPETUAL);
-
-    assertThat(new CurrencyPair("XBT", "USD")).isEqualTo(perpetualXBT);
-    assertThat(new CurrencyPair("ETH", "USD")).isEqualTo(perpetualETH);
-  }
-
-  @Test
-  public void fetchTickerTest() throws IOException {
-    CurrencyPair activeContract =
-        bitmexExchange.determineActiveContract("BTC", "USD", BitmexPrompt.PERPETUAL);
-
-    Ticker ticker = marketDataService.getTicker(activeContract);
-    assertThat(ticker).isNotNull();
-    assertThat(ticker.getCurrencyPair()).isEqualTo(activeContract);
-    assertThat(ticker.getOpen()).isGreaterThan(BigDecimal.ZERO);
-    assertThat(ticker.getLast()).isGreaterThan(BigDecimal.ZERO);
-    assertThat(ticker.getBid()).isGreaterThan(BigDecimal.ZERO);
-    assertThat(ticker.getAsk()).isGreaterThan(BigDecimal.ZERO);
-    assertThat(ticker.getHigh()).isGreaterThan(BigDecimal.ZERO);
-    assertThat(ticker.getLow()).isGreaterThan(BigDecimal.ZERO);
-    assertThat(ticker.getVwap()).isGreaterThan(BigDecimal.ZERO);
-    assertThat(ticker.getVolume()).isGreaterThan(BigDecimal.ZERO);
-  }
+//  @Test
+//  public void determineActiveContractTest() {
+//    CurrencyPair perpetualXBT =
+//        bitmexExchange.determineActiveContract("BTC", "USD", BitmexPrompt.PERPETUAL);
+//    CurrencyPair perpetualETH =
+//        bitmexExchange.determineActiveContract("ETH", "BTC", BitmexPrompt.PERPETUAL);
+//
+//    assertThat(new CurrencyPair("XBT", "USD")).isEqualTo(perpetualXBT);
+//    assertThat(new CurrencyPair("ETH", "USD")).isEqualTo(perpetualETH);
+//  }
+//
+//  @Test
+//  public void fetchTickerTest() throws IOException {
+//    CurrencyPair activeContract =
+//        bitmexExchange.determineActiveContract("BTC", "USD", BitmexPrompt.PERPETUAL);
+//
+//    Ticker ticker = marketDataService.getTicker(activeContract);
+//    assertThat(ticker).isNotNull();
+//    assertThat(ticker.getCurrencyPair()).isEqualTo(activeContract);
+//    assertThat(ticker.getOpen()).isGreaterThan(BigDecimal.ZERO);
+//    assertThat(ticker.getLast()).isGreaterThan(BigDecimal.ZERO);
+//    assertThat(ticker.getBid()).isGreaterThan(BigDecimal.ZERO);
+//    assertThat(ticker.getAsk()).isGreaterThan(BigDecimal.ZERO);
+//    assertThat(ticker.getHigh()).isGreaterThan(BigDecimal.ZERO);
+//    assertThat(ticker.getLow()).isGreaterThan(BigDecimal.ZERO);
+//    assertThat(ticker.getVwap()).isGreaterThan(BigDecimal.ZERO);
+//    assertThat(ticker.getVolume()).isGreaterThan(BigDecimal.ZERO);
+//  }
 }

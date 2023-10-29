@@ -1,7 +1,7 @@
 package org.knowm.xchange.cryptodotcom;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 

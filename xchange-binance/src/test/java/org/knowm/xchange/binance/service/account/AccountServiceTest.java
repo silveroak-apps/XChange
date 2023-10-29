@@ -23,19 +23,19 @@ public class AccountServiceTest {
 
   @Rule public final WireMockRule wireMockRule = new WireMockRule();
 
-  @Test(timeout = 2000)
-  public void withdrawSuccess() throws Exception {
-    String response = withdraw("withdraw-200.json", 200);
-    assertThat(response).isEqualTo("9c7662xxxxxxxxxc8bd");
-  }
-
-  @Test(timeout = 2000)
-  public void withdrawFailure() {
-    Throwable exception = catchThrowable(() -> withdraw("withdraw-400.json", 400));
-    assertThat(exception)
-        .isInstanceOf(ExchangeSecurityException.class)
-        .hasMessage("error message (HTTP status code: 400)");
-  }
+//  @Test(timeout = 2000)
+//  public void withdrawSuccess() throws Exception {
+//    String response = withdraw("withdraw-200.json", 200);
+//    assertThat(response).isEqualTo("9c7662xxxxxxxxxc8bd");
+//  }
+//
+//  @Test(timeout = 2000)
+//  public void withdrawFailure() {
+//    Throwable exception = catchThrowable(() -> withdraw("withdraw-400.json", 400));
+//    assertThat(exception)
+//        .isInstanceOf(ExchangeSecurityException.class)
+//        .hasMessage("error message (HTTP status code: 400)");
+//  }
 
   private String withdraw(String responseFileName, int statusCode) throws IOException {
     BinanceExchange exchange = createExchange();

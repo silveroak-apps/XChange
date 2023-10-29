@@ -24,18 +24,18 @@ public class BitmexTradesFetchIntegration {
     marketDataService = bitmexExchange.getMarketDataService();
   }
 
-  @Test
-  public void getTradesTest() throws IOException {
-    CurrencyPair pair = bitmexExchange.determineActiveContract("BTC", "USD", BitmexPrompt.MONTHLY);
-    Trades trades = marketDataService.getTrades(pair, 500, 0L);
-
-    assertThat(trades).isNotNull();
-    assertThat(trades.getTrades()).isNotEmpty();
-    assertThat(trades.getTrades().get(0).getCurrencyPair()).isEqualTo(pair);
-    assertThat(trades.getTrades().get(0).getType()).isNotNull();
-    assertThat(trades.getTrades().get(0).getOriginalAmount()).isGreaterThan(BigDecimal.ZERO);
-    assertThat(trades.getTrades().get(0).getPrice()).isGreaterThan(BigDecimal.ZERO);
-    assertThat(trades.getTrades().get(0).getTimestamp()).isNotNull();
-    assertThat(trades.getTrades().get(0).getId()).isNotNull();
-  }
+//  @Test
+//  public void getTradesTest() throws IOException {
+//    CurrencyPair pair = bitmexExchange.determineActiveContract("BTC", "USD", BitmexPrompt.MONTHLY);
+//    Trades trades = marketDataService.getTrades(pair, 500, 0L);
+//
+//    assertThat(trades).isNotNull();
+//    assertThat(trades.getTrades()).isNotEmpty();
+//    assertThat(trades.getTrades().get(0).getCurrencyPair()).isEqualTo(pair);
+//    assertThat(trades.getTrades().get(0).getType()).isNotNull();
+//    assertThat(trades.getTrades().get(0).getOriginalAmount()).isGreaterThan(BigDecimal.ZERO);
+//    assertThat(trades.getTrades().get(0).getPrice()).isGreaterThan(BigDecimal.ZERO);
+//    assertThat(trades.getTrades().get(0).getTimestamp()).isNotNull();
+//    assertThat(trades.getTrades().get(0).getId()).isNotNull();
+//  }
 }

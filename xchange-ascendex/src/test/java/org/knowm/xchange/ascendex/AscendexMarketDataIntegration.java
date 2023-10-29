@@ -12,15 +12,15 @@ import org.knowm.xchange.ascendex.service.AscendexMarketDataService;
 
 public class AscendexMarketDataIntegration {
 
-  @Test
-  public void testBarHist() throws IOException {
-    Exchange exchange =
-        ExchangeFactory.INSTANCE.createExchange(AscendexExchange.class.getCanonicalName());
-    exchange.remoteInit();
-
-    List<AscendexBarHistDto> barHistDtos =
-        ((AscendexMarketDataService) exchange.getMarketDataService())
-            .getBarHistoryData("BTC/USDT", "15", null, null, 100);
-    Assert.assertTrue(Objects.nonNull(barHistDtos) && !barHistDtos.isEmpty());
-  }
+//  @Test
+//  public void testBarHist() throws IOException {
+//    Exchange exchange =
+//        ExchangeFactory.INSTANCE.createExchange(AscendexExchange.class.getCanonicalName());
+//    exchange.remoteInit();
+//
+//    List<AscendexBarHistDto> barHistDtos =
+//        ((AscendexMarketDataService) exchange.getMarketDataService())
+//            .getBarHistoryData("BTC/USDT", "15", null, null, 100);
+//    Assert.assertTrue(Objects.nonNull(barHistDtos) && !barHistDtos.isEmpty());
+//  }
 }

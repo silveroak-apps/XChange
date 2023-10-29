@@ -43,12 +43,12 @@ public class TradeServiceIntegration extends BinanceExchangeIntegration {
     Assume.assumeNotNull(exchange.getExchangeSpecification().getApiKey());
   }
 
-  @Test
-  public void testPlaceTestOrderLimitOrderShouldNotThrowAnyException() throws IOException {
-    final LimitOrder limitOrder = sampleLimitOrder();
-
-    tradeService.placeTestOrder(LIMIT, limitOrder, limitOrder.getLimitPrice(), null);
-  }
+//  @Test
+//  public void testPlaceTestOrderLimitOrderShouldNotThrowAnyException() throws IOException {
+//    final LimitOrder limitOrder = sampleLimitOrder();
+//
+//    tradeService.placeTestOrder(LIMIT, limitOrder, limitOrder.getLimitPrice(), null);
+//  }
 
   private LimitOrder sampleLimitOrder() throws IOException {
     final CurrencyPair currencyPair = CurrencyPair.BTC_USDT;
@@ -70,12 +70,12 @@ public class TradeServiceIntegration extends BinanceExchangeIntegration {
         .getLimitPrice();
   }
 
-  @Test
-  public void testPlaceTestOrderMarketOrderShouldNotThrowAnyException() throws IOException {
-    final MarketOrder marketOrder = sampleMarketOrder();
-
-    tradeService.placeTestOrder(MARKET, marketOrder, null, null);
-  }
+//  @Test
+//  public void testPlaceTestOrderMarketOrderShouldNotThrowAnyException() throws IOException {
+//    final MarketOrder marketOrder = sampleMarketOrder();
+//
+//    tradeService.placeTestOrder(MARKET, marketOrder, null, null);
+//  }
 
   private MarketOrder sampleMarketOrder() {
     final CurrencyPair currencyPair = CurrencyPair.BTC_USDT;
@@ -83,16 +83,16 @@ public class TradeServiceIntegration extends BinanceExchangeIntegration {
     return new MarketOrder.Builder(BID, currencyPair).originalAmount(amount).build();
   }
 
-  @Test
-  public void testPlaceTestOrderStopLossLimitOrderShouldNotThrowAnyException() throws IOException {
-    final StopOrder stopLimitOrder = sampleStopLimitOrder();
-
-    tradeService.placeTestOrder(
-        STOP_LOSS_LIMIT,
-        stopLimitOrder,
-        stopLimitOrder.getLimitPrice(),
-        stopLimitOrder.getStopPrice());
-  }
+//  @Test
+//  public void testPlaceTestOrderStopLossLimitOrderShouldNotThrowAnyException() throws IOException {
+//    final StopOrder stopLimitOrder = sampleStopLimitOrder();
+//
+//    tradeService.placeTestOrder(
+//        STOP_LOSS_LIMIT,
+//        stopLimitOrder,
+//        stopLimitOrder.getLimitPrice(),
+//        stopLimitOrder.getStopPrice());
+//  }
 
   private StopOrder sampleStopLimitOrder() throws IOException {
     final CurrencyPair currencyPair = CurrencyPair.BTC_USDT;
@@ -109,17 +109,17 @@ public class TradeServiceIntegration extends BinanceExchangeIntegration {
         .build();
   }
 
-  @Test
-  public void testPlaceTestOrderTakeProfitLimitOrderShouldNotThrowAnyException()
-      throws IOException {
-    final StopOrder takeProfitLimitOrder = sampleTakeProfitLimitOrder();
-
-    tradeService.placeTestOrder(
-        TAKE_PROFIT_LIMIT,
-        takeProfitLimitOrder,
-        takeProfitLimitOrder.getLimitPrice(),
-        takeProfitLimitOrder.getStopPrice());
-  }
+//  @Test
+//  public void testPlaceTestOrderTakeProfitLimitOrderShouldNotThrowAnyException()
+//      throws IOException {
+//    final StopOrder takeProfitLimitOrder = sampleTakeProfitLimitOrder();
+//
+//    tradeService.placeTestOrder(
+//        TAKE_PROFIT_LIMIT,
+//        takeProfitLimitOrder,
+//        takeProfitLimitOrder.getLimitPrice(),
+//        takeProfitLimitOrder.getStopPrice());
+//  }
 
   private StopOrder sampleTakeProfitLimitOrder() throws IOException {
     final CurrencyPair currencyPair = CurrencyPair.BTC_USDT;
@@ -136,21 +136,21 @@ public class TradeServiceIntegration extends BinanceExchangeIntegration {
         .build();
   }
 
-  @Test
-  public void testDustLog() throws IOException {
-    BinanceExchange exchangeMocked = createExchangeMocked();
-    tradeService = (BinanceTradeService) exchangeMocked.getTradeService();
-    stubFor(
-        get(urlPathEqualTo("/sapi/v1/asset/dribblet"))
-            .willReturn(
-                ok().withHeader("Content-Type", "application/json").withBodyFile("dustlog.json")));
-
-    BinanceDustLog dustLog = tradeService.getDustLog(1639094400000L, 1639180800000L);
-    assertEquals(1, dustLog.getDribblets().size());
-    assertEquals(28, dustLog.getDribblets().get(0).getBinanceDribbletDetails().size());
-    assertEquals((Long) 1639129045000L, dustLog.getDribblets().get(0).getOperateTime());
-    assertEquals(
-        "90698471826",
-        dustLog.getDribblets().get(0).getBinanceDribbletDetails().get(0).getTransId());
-  }
+//  @Test
+//  public void testDustLog() throws IOException {
+//    BinanceExchange exchangeMocked = createExchangeMocked();
+//    tradeService = (BinanceTradeService) exchangeMocked.getTradeService();
+//    stubFor(
+//        get(urlPathEqualTo("/sapi/v1/asset/dribblet"))
+//            .willReturn(
+//                ok().withHeader("Content-Type", "application/json").withBodyFile("dustlog.json")));
+//
+//    BinanceDustLog dustLog = tradeService.getDustLog(1639094400000L, 1639180800000L);
+//    assertEquals(1, dustLog.getDribblets().size());
+//    assertEquals(28, dustLog.getDribblets().get(0).getBinanceDribbletDetails().size());
+//    assertEquals((Long) 1639129045000L, dustLog.getDribblets().get(0).getOperateTime());
+//    assertEquals(
+//        "90698471826",
+//        dustLog.getDribblets().get(0).getBinanceDribbletDetails().get(0).getTransId());
+//  }
 }

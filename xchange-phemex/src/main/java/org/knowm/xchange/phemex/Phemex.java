@@ -2,8 +2,8 @@ package org.knowm.xchange.phemex;
 
 import org.knowm.xchange.phemex.dto.PhemexException;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 

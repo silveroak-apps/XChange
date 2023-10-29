@@ -37,7 +37,7 @@ public class KrakenOHLCJSONTest {
         .isEqualTo(new BigDecimal("3449.997"));
     assertThat(krakenOHLCs.getResult().getOHLCs().get(0).getVolume())
         .isEqualTo(new BigDecimal("1.01200000"));
-    assertThat(krakenOHLCs.getResult().getOHLCs().get(0).getCount()).isEqualTo(new Long("7"));
+    assertThat(krakenOHLCs.getResult().getOHLCs().get(0).getCount()).isEqualTo(Long.parseLong("7"));
     long lastId = krakenOHLCs.getResult().getLast();
     assertThat(lastId).isEqualTo(1502445600L);
   }

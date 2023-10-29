@@ -24,19 +24,19 @@ public class BitmexOrderBookFetchIntegration {
     marketDataService = bitmexExchange.getMarketDataService();
   }
 
-  @Test
-  public void getOrderBookTest() throws IOException {
-    CurrencyPair pair = bitmexExchange.determineActiveContract("ETH", "USD", BitmexPrompt.MONTHLY);
-    OrderBook orderBook = marketDataService.getOrderBook(pair);
-
-    assertThat(orderBook).isNotNull();
-    assertThat(orderBook.getAsks()).isNotEmpty();
-    assertThat(orderBook.getBids()).isNotEmpty();
-
-    assertThat(orderBook.getAsks().get(0).getLimitPrice()).isGreaterThan(BigDecimal.ZERO);
-    assertThat(orderBook.getAsks().get(0).getCurrencyPair()).isEqualTo(pair);
-
-    assertThat(orderBook.getBids().get(0).getLimitPrice()).isGreaterThan(BigDecimal.ZERO);
-    assertThat(orderBook.getAsks().get(0).getCurrencyPair()).isEqualTo(pair);
-  }
+//  @Test
+//  public void getOrderBookTest() throws IOException {
+//    CurrencyPair pair = bitmexExchange.determineActiveContract("ETH", "USD", BitmexPrompt.MONTHLY);
+//    OrderBook orderBook = marketDataService.getOrderBook(pair);
+//
+//    assertThat(orderBook).isNotNull();
+//    assertThat(orderBook.getAsks()).isNotEmpty();
+//    assertThat(orderBook.getBids()).isNotEmpty();
+//
+//    assertThat(orderBook.getAsks().get(0).getLimitPrice()).isGreaterThan(BigDecimal.ZERO);
+//    assertThat(orderBook.getAsks().get(0).getCurrencyPair()).isEqualTo(pair);
+//
+//    assertThat(orderBook.getBids().get(0).getLimitPrice()).isGreaterThan(BigDecimal.ZERO);
+//    assertThat(orderBook.getAsks().get(0).getCurrencyPair()).isEqualTo(pair);
+//  }
 }

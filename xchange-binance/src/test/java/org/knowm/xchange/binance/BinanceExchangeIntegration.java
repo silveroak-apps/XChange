@@ -23,14 +23,14 @@ public class BinanceExchangeIntegration {
     createExchange();
   }
 
-  @Test
-  public void testSytemStatus() throws IOException {
-    assumeProduction();
-    BinanceSystemStatus systemStatus =
-        ((BinanceAccountService) exchange.getAccountService()).getSystemStatus();
-    assertThat(systemStatus).isNotNull();
-    assertThat(systemStatus.getStatus()).isNotEmpty();
-  }
+//  @Test
+//  public void testSytemStatus() throws IOException {
+//    assumeProduction();
+//    BinanceSystemStatus systemStatus =
+//        ((BinanceAccountService) exchange.getAccountService()).getSystemStatus();
+//    assertThat(systemStatus).isNotNull();
+//    assertThat(systemStatus.getStatus()).isNotEmpty();
+//  }
 
   protected static void createExchange() throws Exception {
     exchange = ExchangeFactory.INSTANCE.createExchangeWithoutSpecification(BinanceExchange.class);

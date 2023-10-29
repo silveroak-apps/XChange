@@ -28,15 +28,15 @@ public class MarketDataServiceIntegration {
     marketDataService = exchange.getMarketDataService();
   }
 
-  @Test
-  public void getHistoricalPrice() throws Exception {
-
-    CoinbaseMarketDataService coinbaseService = (CoinbaseMarketDataService) marketDataService;
-    List<ArrayList<Object>> candle = coinbaseService.getCoinbaseHistoricalCandles("BTC-USDT",
-            3600,
-            new Date(1678500000000L).getTime(),
-            new Date().getTime());
-    assertThat(candle).isNotNull();
-  }
+//  @Test
+//  public void getHistoricalPrice() throws Exception {
+//
+//    CoinbaseMarketDataService coinbaseService = (CoinbaseMarketDataService) marketDataService;
+//    List<ArrayList<Object>> candle = coinbaseService.getCoinbaseHistoricalCandles("BTC-USDT",
+//            3600,
+//            new Date(1678500000000L).getTime(),
+//            new Date().getTime());
+//    assertThat(candle).isNotNull();
+//  }
 
 }

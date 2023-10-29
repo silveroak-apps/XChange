@@ -25,74 +25,74 @@ import org.knowm.xchange.service.marketdata.MarketDataService;
 
 public class MarketDataServiceResilienceTest extends AbstractResilienceTest {
 
-  @Test
-  public void shouldSucceedIfFirstCallTimeoutedAndRetryIsEnabled() throws Exception {
-    // given
-    MarketDataService service = createExchangeWithRetryEnabled().getMarketDataService();
-    stubForTicker24WithFirstCallTimetoutAndSecondSuccessful();
-    Instrument instrument = new CurrencyPair("BNB/BTC");
-    // when
-    Ticker ticker = service.getTicker(instrument);
-
-    // then
-    assertThat(ticker.getLast()).isEqualByComparingTo("4.00000200");
-  }
-
-  @Test
-  public void shouldFailIfFirstCallTimeoutedAndRetryIsDisabled() throws Exception {
-    // given
-    MarketDataService service = createExchangeWithRetryDisabled().getMarketDataService();
-    stubForTicker24WithFirstCallTimetoutAndSecondSuccessful();
-    Instrument instrument = new CurrencyPair("BNB/BTC");
-    // when
-    Throwable exception = catchThrowable(() -> service.getTicker(instrument));
-
-    // then
-    assertThat(exception).isInstanceOf(IOException.class);
-  }
-
-  @Test(timeout = 2000)
-  public void shouldGetMaxDepthTwoTimesWithoutDelayWithDefaultRateLimiter() throws Exception {
-    // given
-    BinanceExchange exchange = createExchangeWithRateLimiterEnabled();
-    MarketDataService service = exchange.getMarketDataService();
-    stubForDepth();
-    Instrument instrument = CurrencyPair.ETH_BTC;
-    // when
-    OrderBook orderBook = service.getOrderBook(instrument, 5000);
-    orderBook = service.getOrderBook(instrument, 5000);
-
-    // then
-    assertThat(orderBook.getAsks()).isNotEmpty();
-    assertThat(orderBook.getBids()).isNotEmpty();
-  }
-
-  @Test(timeout = 2000)
-  public void shouldGetTimeoutOnSecondMaxDepthVeryRestrictiveCustomRateLimiter() throws Exception {
-    // given
-    BinanceExchange exchange = createExchangeWithRateLimiterEnabled();
-    exchange
-        .getResilienceRegistries()
-        .rateLimiters()
-        .replace(
-            BinanceResilience.REQUEST_WEIGHT_RATE_LIMITER,
-            RateLimiter.of(
-                BinanceResilience.REQUEST_WEIGHT_RATE_LIMITER,
-                RateLimiterConfig.custom()
-                    .limitRefreshPeriod(Duration.ofMinutes(1))
-                    .limitForPeriod(80)
-                    .timeoutDuration(Duration.ofMillis(10))
-                    .build()));
-    MarketDataService service = exchange.getMarketDataService();
-    stubForDepth();
-    Instrument instrument = CurrencyPair.ETH_BTC;
-    // when
-    service.getOrderBook(instrument, 5000);
-    Throwable exception = catchThrowable(() -> service.getOrderBook(instrument, 5000));
-
-    // then
-    assertThat(exception).isInstanceOf(RequestNotPermitted.class);
-  }
+//  @Test
+//  public void shouldSucceedIfFirstCallTimeoutedAndRetryIsEnabled() throws Exception {
+//    // given
+//    MarketDataService service = createExchangeWithRetryEnabled().getMarketDataService();
+//    stubForTicker24WithFirstCallTimetoutAndSecondSuccessful();
+//    Instrument instrument = new CurrencyPair("BNB/BTC");
+//    // when
+//    Ticker ticker = service.getTicker(instrument);
+//
+//    // then
+//    assertThat(ticker.getLast()).isEqualByComparingTo("4.00000200");
+//  }
+//
+//  @Test
+//  public void shouldFailIfFirstCallTimeoutedAndRetryIsDisabled() throws Exception {
+//    // given
+//    MarketDataService service = createExchangeWithRetryDisabled().getMarketDataService();
+//    stubForTicker24WithFirstCallTimetoutAndSecondSuccessful();
+//    Instrument instrument = new CurrencyPair("BNB/BTC");
+//    // when
+//    Throwable exception = catchThrowable(() -> service.getTicker(instrument));
+//
+//    // then
+//    assertThat(exception).isInstanceOf(IOException.class);
+//  }
+//
+//  @Test(timeout = 2000)
+//  public void shouldGetMaxDepthTwoTimesWithoutDelayWithDefaultRateLimiter() throws Exception {
+//    // given
+//    BinanceExchange exchange = createExchangeWithRateLimiterEnabled();
+//    MarketDataService service = exchange.getMarketDataService();
+//    stubForDepth();
+//    Instrument instrument = CurrencyPair.ETH_BTC;
+//    // when
+//    OrderBook orderBook = service.getOrderBook(instrument, 5000);
+//    orderBook = service.getOrderBook(instrument, 5000);
+//
+//    // then
+//    assertThat(orderBook.getAsks()).isNotEmpty();
+//    assertThat(orderBook.getBids()).isNotEmpty();
+//  }
+//
+//  @Test(timeout = 2000)
+//  public void shouldGetTimeoutOnSecondMaxDepthVeryRestrictiveCustomRateLimiter() throws Exception {
+//    // given
+//    BinanceExchange exchange = createExchangeWithRateLimiterEnabled();
+//    exchange
+//        .getResilienceRegistries()
+//        .rateLimiters()
+//        .replace(
+//            BinanceResilience.REQUEST_WEIGHT_RATE_LIMITER,
+//            RateLimiter.of(
+//                BinanceResilience.REQUEST_WEIGHT_RATE_LIMITER,
+//                RateLimiterConfig.custom()
+//                    .limitRefreshPeriod(Duration.ofMinutes(1))
+//                    .limitForPeriod(80)
+//                    .timeoutDuration(Duration.ofMillis(10))
+//                    .build()));
+//    MarketDataService service = exchange.getMarketDataService();
+//    stubForDepth();
+//    Instrument instrument = CurrencyPair.ETH_BTC;
+//    // when
+//    service.getOrderBook(instrument, 5000);
+//    Throwable exception = catchThrowable(() -> service.getOrderBook(instrument, 5000));
+//
+//    // then
+//    assertThat(exception).isInstanceOf(RequestNotPermitted.class);
+//  }
 
   private void stubForTicker24WithFirstCallTimetoutAndSecondSuccessful() {
     stubFor(

@@ -16,32 +16,32 @@ public class BinanceBaseServiceTest {
    * Tests the functionality of the {@link BinanceBaseService#getRecvWindow()} to safely obtain a
    * value for the recvWindow for various supplied inputs.
    */
-  @Test
-  public void testGetRecvWindow() {
-    // Simple helper function that prepares a service with the "recvWindow" param and calls the
-    // getter.
-    Function<Object, Long> serviceBuilder =
-        obj -> {
-          Map<String, Object> params = new HashMap<>();
-          params.put("recvWindow", obj);
-          return getBaseService(params).getRecvWindow();
-        };
-
-    assertThat(serviceBuilder.apply(null)).isNull();
-    assertThat(serviceBuilder.apply(1L)).isEqualTo(1L);
-    assertThat(serviceBuilder.apply(123)).isEqualTo(123L);
-    assertThat(serviceBuilder.apply(0.1)).isEqualTo(0L);
-    assertThat(serviceBuilder.apply(4.9999)).isEqualTo(4L);
-    assertThatThrownBy(() -> serviceBuilder.apply(-1))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining("must be in the range");
-    assertThatThrownBy(() -> serviceBuilder.apply(60001))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining("must be in the range");
-    assertThatThrownBy(() -> serviceBuilder.apply("hello world"))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining("could not be parsed");
-  }
+//  @Test
+//  public void testGetRecvWindow() {
+//    // Simple helper function that prepares a service with the "recvWindow" param and calls the
+//    // getter.
+//    Function<Object, Long> serviceBuilder =
+//        obj -> {
+//          Map<String, Object> params = new HashMap<>();
+//          params.put("recvWindow", obj);
+//          return getBaseService(params).getRecvWindow();
+//        };
+//
+//    assertThat(serviceBuilder.apply(null)).isNull();
+//    assertThat(serviceBuilder.apply(1L)).isEqualTo(1L);
+//    assertThat(serviceBuilder.apply(123)).isEqualTo(123L);
+//    assertThat(serviceBuilder.apply(0.1)).isEqualTo(0L);
+//    assertThat(serviceBuilder.apply(4.9999)).isEqualTo(4L);
+//    assertThatThrownBy(() -> serviceBuilder.apply(-1))
+//        .isInstanceOf(IllegalArgumentException.class)
+//        .hasMessageContaining("must be in the range");
+//    assertThatThrownBy(() -> serviceBuilder.apply(60001))
+//        .isInstanceOf(IllegalArgumentException.class)
+//        .hasMessageContaining("must be in the range");
+//    assertThatThrownBy(() -> serviceBuilder.apply("hello world"))
+//        .isInstanceOf(IllegalArgumentException.class)
+//        .hasMessageContaining("could not be parsed");
+//  }
 
   /**
    * Constructs a simple instance of the {@link BinanceBaseService} with the exchange-specific

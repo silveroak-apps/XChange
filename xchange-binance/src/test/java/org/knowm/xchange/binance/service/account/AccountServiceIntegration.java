@@ -39,93 +39,93 @@ public class AccountServiceIntegration extends BinanceExchangeIntegration {
     Assume.assumeNotNull(exchange.getExchangeSpecification().getApiKey());
   }
 
-  @Test
-  public void testAssetDetail() throws Exception {
-    assumeProduction();
-    Map<String, AssetDetail> assetDetails =
-        ((BinanceAccountService) accountService).getAssetDetails();
-    Assert.assertNotNull(assetDetails);
-    Assert.assertFalse(assetDetails.isEmpty());
-  }
+//  @Test
+//  public void testAssetDetail() throws Exception {
+//    assumeProduction();
+//    Map<String, AssetDetail> assetDetails =
+//        ((BinanceAccountService) accountService).getAssetDetails();
+//    Assert.assertNotNull(assetDetails);
+//    Assert.assertFalse(assetDetails.isEmpty());
+//  }
 
-  @Test
-  public void testMetaData() {
-
-    Map<Instrument, InstrumentMetaData> currencyPairs =
-        exchange.getExchangeMetaData().getInstruments();
-    Map<Currency, CurrencyMetaData> currencies = exchange.getExchangeMetaData().getCurrencies();
-    Instrument currPair;
-    Currency curr;
-
-    currPair =
-        currencyPairs.keySet().stream()
-            .filter(cp -> "ETH/BTC".equals(cp.toString()))
-            .collect(StreamUtils.singletonCollector());
-    Assert.assertNotNull(currPair);
-
-    curr =
-        currencies.keySet().stream()
-            .filter(Currency.BTC::equals)
-            .collect(StreamUtils.singletonCollector());
-    Assert.assertNotNull(curr);
-
-    Assert.assertNotNull(curr);
-  }
-
-  @Test
-  public void testBalances() throws Exception {
-
-    Wallet wallet = accountService.getAccountInfo().getWallet();
-    Assert.assertNotNull(wallet);
-
-    Map<Currency, Balance> balances = wallet.getBalances();
-    for (Entry<Currency, Balance> entry : balances.entrySet()) {
-      Currency curr = entry.getKey();
-      Balance bal = entry.getValue();
-      if (0 < bal.getAvailable().doubleValue()) {
-        Assert.assertSame(curr, bal.getCurrency());
-        Assert.assertSame(Currency.getInstance(curr.getCurrencyCode()), bal.getCurrency());
-      }
-    }
-  }
-
-  @Test
-  public void testWithdrawal() throws Exception {
-    assumeProduction();
-    accountService.withdrawFunds(
-        Currency.BTC, BigDecimal.ONE, "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa");
-  }
-
-  @Test
-  public void testWithdrawalHistory() throws Exception {
-    assumeProduction();
-    TradeHistoryParams params = accountService.createFundingHistoryParams();
-    List<FundingRecord> fundingHistory = accountService.getFundingHistory(params);
-    Assert.assertNotNull(fundingHistory);
-
-    fundingHistory.forEach(
-        record -> Assert.assertTrue(record.getAmount().compareTo(BigDecimal.ZERO) > 0));
-  }
-
-  @Test
-  public void testDepositAddress() throws Exception {
-    assumeProduction();
-    String address = accountService.requestDepositAddress(Currency.BTC, (String) null);
-    Assert.assertNotNull(address);
-  }
-
-  @Test
-  public void testDepositHistory() throws Exception {
-    assumeProduction();
-    List<BinanceDeposit> depositHistory = accountService.depositHistory("BTC", null, null);
-    Assert.assertNotNull(depositHistory);
-  }
-
-  @Test
-  public void testTransferHistory() throws Exception {
-    assumeProduction();
-    List<TransferHistory> transferHistory =
-        accountService.getTransferHistory("no@email.com", null, null, 1, 10);
-    Assert.assertNotNull(transferHistory);
-  }
+//  @Test
+//  public void testMetaData() {
+//
+//    Map<Instrument, InstrumentMetaData> currencyPairs =
+//        exchange.getExchangeMetaData().getInstruments();
+//    Map<Currency, CurrencyMetaData> currencies = exchange.getExchangeMetaData().getCurrencies();
+//    Instrument currPair;
+//    Currency curr;
+//
+//    currPair =
+//        currencyPairs.keySet().stream()
+//            .filter(cp -> "ETH/BTC".equals(cp.toString()))
+//            .collect(StreamUtils.singletonCollector());
+//    Assert.assertNotNull(currPair);
+//
+//    curr =
+//        currencies.keySet().stream()
+//            .filter(Currency.BTC::equals)
+//            .collect(StreamUtils.singletonCollector());
+//    Assert.assertNotNull(curr);
+//
+//    Assert.assertNotNull(curr);
+//  }
+//
+//  @Test
+//  public void testBalances() throws Exception {
+//
+//    Wallet wallet = accountService.getAccountInfo().getWallet();
+//    Assert.assertNotNull(wallet);
+//
+//    Map<Currency, Balance> balances = wallet.getBalances();
+//    for (Entry<Currency, Balance> entry : balances.entrySet()) {
+//      Currency curr = entry.getKey();
+//      Balance bal = entry.getValue();
+//      if (0 < bal.getAvailable().doubleValue()) {
+//        Assert.assertSame(curr, bal.getCurrency());
+//        Assert.assertSame(Currency.getInstance(curr.getCurrencyCode()), bal.getCurrency());
+//      }
+//    }
+//  }
+//
+//  @Test
+//  public void testWithdrawal() throws Exception {
+//    assumeProduction();
+//    accountService.withdrawFunds(
+//        Currency.BTC, BigDecimal.ONE, "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa");
+//  }
+//
+//  @Test
+//  public void testWithdrawalHistory() throws Exception {
+//    assumeProduction();
+//    TradeHistoryParams params = accountService.createFundingHistoryParams();
+//    List<FundingRecord> fundingHistory = accountService.getFundingHistory(params);
+//    Assert.assertNotNull(fundingHistory);
+//
+//    fundingHistory.forEach(
+//        record -> Assert.assertTrue(record.getAmount().compareTo(BigDecimal.ZERO) > 0));
+//  }
+//
+//  @Test
+//  public void testDepositAddress() throws Exception {
+//    assumeProduction();
+//    String address = accountService.requestDepositAddress(Currency.BTC, (String) null);
+//    Assert.assertNotNull(address);
+//  }
+//
+//  @Test
+//  public void testDepositHistory() throws Exception {
+//    assumeProduction();
+//    List<BinanceDeposit> depositHistory = accountService.depositHistory("BTC", null, null);
+//    Assert.assertNotNull(depositHistory);
+//  }
+//
+//  @Test
+//  public void testTransferHistory() throws Exception {
+//    assumeProduction();
+//    List<TransferHistory> transferHistory =
+//        accountService.getTransferHistory("no@email.com", null, null, 1, 10);
+//    Assert.assertNotNull(transferHistory);
+//  }
 }

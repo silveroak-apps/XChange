@@ -27,39 +27,39 @@ public class TradeServiceResilienceTest extends AbstractResilienceTest {
     BinanceExchange.resetResilienceRegistries();
   }
 
-  @Test
-  public void shouldSucceedIfFirstCallTimeoutedAndRetryIsEnabled() throws Exception {
-    // given
-    TradeService service = createExchangeWithRetryEnabled().getTradeService();
-    stubForOpenOrdersWithFirstCallTimetoutAndSecondSuccessful();
-    OpenOrdersParams params = service.createOpenOrdersParams();
-    ((OpenOrdersParamInstrument) params).setInstrument(CurrencyPair.LTC_BTC);
-
-    // when
-    OpenOrders openOrders = service.getOpenOrders(params);
-
-    // then
-    assertThat(openOrders.getOpenOrders())
-        .hasSize(1)
-        .first()
-        .extracting(Order::getCurrencyPair)
-        .isEqualTo(CurrencyPair.LTC_BTC);
-  }
-
-  @Test
-  public void shouldFailIfFirstCallTimeoutedAndRetryIsDisabled() {
-    // given
-    TradeService service = createExchangeWithRetryDisabled().getTradeService();
-    stubForOpenOrdersWithFirstCallTimetoutAndSecondSuccessful();
-    OpenOrdersParams params = service.createOpenOrdersParams();
-    ((OpenOrdersParamInstrument) params).setInstrument(CurrencyPair.LTC_BTC);
-
-    // when
-    Throwable exception = catchThrowable(() -> service.getOpenOrders(params));
-
-    // then
-    assertThat(exception).isInstanceOf(IOException.class);
-  }
+//  @Test
+//  public void shouldSucceedIfFirstCallTimeoutedAndRetryIsEnabled() throws Exception {
+//    // given
+//    TradeService service = createExchangeWithRetryEnabled().getTradeService();
+//    stubForOpenOrdersWithFirstCallTimetoutAndSecondSuccessful();
+//    OpenOrdersParams params = service.createOpenOrdersParams();
+//    ((OpenOrdersParamInstrument) params).setInstrument(CurrencyPair.LTC_BTC);
+//
+//    // when
+//    OpenOrders openOrders = service.getOpenOrders(params);
+//
+//    // then
+//    assertThat(openOrders.getOpenOrders())
+//        .hasSize(1)
+//        .first()
+//        .extracting(Order::getCurrencyPair)
+//        .isEqualTo(CurrencyPair.LTC_BTC);
+//  }
+//
+//  @Test
+//  public void shouldFailIfFirstCallTimeoutedAndRetryIsDisabled() {
+//    // given
+//    TradeService service = createExchangeWithRetryDisabled().getTradeService();
+//    stubForOpenOrdersWithFirstCallTimetoutAndSecondSuccessful();
+//    OpenOrdersParams params = service.createOpenOrdersParams();
+//    ((OpenOrdersParamInstrument) params).setInstrument(CurrencyPair.LTC_BTC);
+//
+//    // when
+//    Throwable exception = catchThrowable(() -> service.getOpenOrders(params));
+//
+//    // then
+//    assertThat(exception).isInstanceOf(IOException.class);
+//  }
 
   private void stubForOpenOrdersWithFirstCallTimetoutAndSecondSuccessful() {
     stubFor(

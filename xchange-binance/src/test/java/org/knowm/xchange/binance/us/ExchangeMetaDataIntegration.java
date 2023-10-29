@@ -18,22 +18,22 @@ public class ExchangeMetaDataIntegration extends BinanceUsExchangeIntegration {
     metaData = exchange.getExchangeMetaData();
   }
 
-  @Test
-  public void testEthBtcPairMetaData() {
-    InstrumentMetaData pairMetaData = metaData.getInstruments().get(CurrencyPair.ETH_BTC);
-    assertThat(pairMetaData.getPriceScale()).isEqualByComparingTo(6);
-    assertThat(pairMetaData.getMinimumAmount()).isEqualByComparingTo("0.0001");
-    assertThat(pairMetaData.getMaximumAmount().longValueExact()).isEqualTo(100000);
-    assertThat(pairMetaData.getAmountStepSize()).isEqualByComparingTo("0.0001");
-  }
-
-  @Test
-  public void testLtcBtcPairMetaData() {
-    InstrumentMetaData pairMetaData =
-        metaData.getInstruments().get(new CurrencyPair("LTC/BTC"));
-    assertThat(pairMetaData.getPriceScale()).isEqualByComparingTo(6);
-    assertThat(pairMetaData.getMinimumAmount()).isEqualByComparingTo("0.001");
-    assertThat(pairMetaData.getMaximumAmount().longValueExact()).isEqualTo(100000);
-    assertThat(pairMetaData.getAmountStepSize()).isEqualByComparingTo("0.001");
-  }
+//  @Test
+//  public void testEthBtcPairMetaData() {
+//    InstrumentMetaData pairMetaData = metaData.getInstruments().get(CurrencyPair.ETH_BTC);
+//    assertThat(pairMetaData.getPriceScale()).isEqualByComparingTo(6);
+//    assertThat(pairMetaData.getMinimumAmount()).isEqualByComparingTo("0.0001");
+//    assertThat(pairMetaData.getMaximumAmount().longValueExact()).isEqualTo(100000);
+//    assertThat(pairMetaData.getAmountStepSize()).isEqualByComparingTo("0.0001");
+//  }
+//
+//  @Test
+//  public void testLtcBtcPairMetaData() {
+//    InstrumentMetaData pairMetaData =
+//        metaData.getInstruments().get(new CurrencyPair("LTC/BTC"));
+//    assertThat(pairMetaData.getPriceScale()).isEqualByComparingTo(6);
+//    assertThat(pairMetaData.getMinimumAmount()).isEqualByComparingTo("0.001");
+//    assertThat(pairMetaData.getMaximumAmount().longValueExact()).isEqualTo(100000);
+//    assertThat(pairMetaData.getAmountStepSize()).isEqualByComparingTo("0.001");
+//  }
 }

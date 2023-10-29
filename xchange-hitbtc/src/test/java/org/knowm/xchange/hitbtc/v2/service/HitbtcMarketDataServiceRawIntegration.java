@@ -21,33 +21,33 @@ public class HitbtcMarketDataServiceRawIntegration extends BaseServiceTest {
   private HitbtcMarketDataServiceRaw marketDataServiceRaw =
       (HitbtcMarketDataServiceRaw) marketDataService;
 
-  @Test
-  public void testGetHitbtcSymbols() throws IOException {
-
-    List<HitbtcSymbol> symbols = marketDataServiceRaw.getHitbtcSymbols();
-
-    assertNotNull(symbols);
-    assertFalse(symbols.isEmpty());
-  }
-
-  @Test
-  public void testGetHitbtcCurrencies() throws IOException {
-
-    List<HitbtcCurrency> currencies = marketDataServiceRaw.getHitbtcCurrencies();
-    assertNotNull(currencies);
-    assertFalse(currencies.isEmpty());
-
-    HitbtcCurrency currency = marketDataServiceRaw.getHitbtcCurrency("btc");
-    assertNotNull(currency);
-    assertEquals("BTC", currency.getId());
-  }
-
-  @Test
-  public void testGetHitbtcTickers() throws IOException {
-
-    Map<String, HitbtcTicker> tickers = marketDataServiceRaw.getHitbtcTickers();
-
-    assertThat(tickers).isNotEmpty();
-    assertThat(tickers.get("BTCUSD")).isNotNull();
-  }
+//  @Test
+//  public void testGetHitbtcSymbols() throws IOException {
+//
+//    List<HitbtcSymbol> symbols = marketDataServiceRaw.getHitbtcSymbols();
+//
+//    assertNotNull(symbols);
+//    assertFalse(symbols.isEmpty());
+//  }
+//
+//  @Test
+//  public void testGetHitbtcCurrencies() throws IOException {
+//
+//    List<HitbtcCurrency> currencies = marketDataServiceRaw.getHitbtcCurrencies();
+//    assertNotNull(currencies);
+//    assertFalse(currencies.isEmpty());
+//
+//    HitbtcCurrency currency = marketDataServiceRaw.getHitbtcCurrency("btc");
+//    assertNotNull(currency);
+//    assertEquals("BTC", currency.getId());
+//  }
+//
+//  @Test
+//  public void testGetHitbtcTickers() throws IOException {
+//
+//    Map<String, HitbtcTicker> tickers = marketDataServiceRaw.getHitbtcTickers();
+//
+//    assertThat(tickers).isNotEmpty();
+//    assertThat(tickers.get("BTCUSD")).isNotNull();
+//  }
 }

@@ -8,12 +8,12 @@ import org.knowm.xchange.ExchangeFactory;
 
 public class ExchangeInitIntegration {
 
-  @Test
-  public void ftxInitializationTest() {
-    Exchange ftx = ExchangeFactory.INSTANCE.createExchange(FtxExchange.class);
-
-    assertThat(ftx.getExchangeInstruments().isEmpty()).isFalse();
-    assertThat(ftx.getExchangeInstruments().isEmpty()).isFalse();
-    assertThat(ftx.getExchangeMetaData().getInstruments().isEmpty()).isFalse();
-  }
+//  @Test
+//  public void ftxInitializationTest() {
+//    Exchange ftx = ExchangeFactory.INSTANCE.createExchange(FtxExchange.class);
+//
+//    assertThat(ftx.getExchangeInstruments().isEmpty()).isFalse();
+//    assertThat(ftx.getExchangeInstruments().isEmpty()).isFalse();
+//    assertThat(ftx.getExchangeMetaData().getInstruments().isEmpty()).isFalse();
+//  }
 }

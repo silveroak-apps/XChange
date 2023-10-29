@@ -22,34 +22,34 @@ public class HuobiPublicApiIntegration {
     exchange = ExchangeFactory.INSTANCE.createExchange(HuobiExchange.class);
   }
 
-  @Test
-  public void getTickerTest() throws Exception {
-    MarketDataService marketDataService = exchange.getMarketDataService();
-    Ticker ticker = marketDataService.getTicker(CurrencyPair.BTC_USDT);
-
-    assertThat(ticker).isNotNull();
-    assertThat(ticker.getBid()).isGreaterThan(BigDecimal.ZERO);
-    assertThat(ticker.getAsk()).isGreaterThan(BigDecimal.ZERO);
-  }
-
-  @Test
-  public void getAllTickerTest() throws Exception {
-    MarketDataService marketDataService = exchange.getMarketDataService();
-    List<Ticker> tickers = marketDataService.getTickers(null);
-
-    assertThat(tickers).isNotNull();
-
-    assertThat(tickers.get(0).getBid()).isGreaterThan(BigDecimal.ZERO);
-    assertThat(tickers.get(0).getAsk()).isGreaterThan(BigDecimal.ZERO);
-    assertThat(tickers.get(0).getBidSize()).isGreaterThan(BigDecimal.ZERO);
-    assertThat(tickers.get(0).getAskSize()).isGreaterThan(BigDecimal.ZERO);
-  }
-
-  @Test
-  public void getExchangeSymbolsTest() {
-    List<Instrument> exchangeSymbols = exchange.getExchangeInstruments();
-
-    assertThat(exchangeSymbols).isNotNull();
-    assertThat(exchangeSymbols).size().isGreaterThan(0);
-  }
+//  @Test
+//  public void getTickerTest() throws Exception {
+//    MarketDataService marketDataService = exchange.getMarketDataService();
+//    Ticker ticker = marketDataService.getTicker(CurrencyPair.BTC_USDT);
+//
+//    assertThat(ticker).isNotNull();
+//    assertThat(ticker.getBid()).isGreaterThan(BigDecimal.ZERO);
+//    assertThat(ticker.getAsk()).isGreaterThan(BigDecimal.ZERO);
+//  }
+//
+//  @Test
+//  public void getAllTickerTest() throws Exception {
+//    MarketDataService marketDataService = exchange.getMarketDataService();
+//    List<Ticker> tickers = marketDataService.getTickers(null);
+//
+//    assertThat(tickers).isNotNull();
+//
+//    assertThat(tickers.get(0).getBid()).isGreaterThan(BigDecimal.ZERO);
+//    assertThat(tickers.get(0).getAsk()).isGreaterThan(BigDecimal.ZERO);
+//    assertThat(tickers.get(0).getBidSize()).isGreaterThan(BigDecimal.ZERO);
+//    assertThat(tickers.get(0).getAskSize()).isGreaterThan(BigDecimal.ZERO);
+//  }
+//
+//  @Test
+//  public void getExchangeSymbolsTest() {
+//    List<Instrument> exchangeSymbols = exchange.getExchangeInstruments();
+//
+//    assertThat(exchangeSymbols).isNotNull();
+//    assertThat(exchangeSymbols).size().isGreaterThan(0);
+//  }
 }

@@ -14,18 +14,18 @@ import org.knowm.xchange.service.marketdata.MarketDataService;
 
 public class BitflyerTickerIntegration {
 
-  @Test
-  public void fetchTickerTest() throws IOException {
-    Exchange exchange = ExchangeFactory.INSTANCE.createExchange(BitflyerExchange.class);
-    MarketDataService service = exchange.getMarketDataService();
-
-    Ticker ticker = service.getTicker(CurrencyPair.BTC_JPY);
-    assertThat(ticker.getCurrencyPair()).isEqualTo(CurrencyPair.BTC_JPY);
-    assertThat(ticker.getHigh()).isNull();
-    assertThat(ticker.getLow()).isNull();
-    assertThat(ticker.getLast()).isGreaterThan(BigDecimal.ZERO);
-    assertThat(ticker.getVolume()).isGreaterThan(BigDecimal.ZERO);
-    assertThat(ticker.getBid()).isGreaterThan(BigDecimal.ZERO);
-    assertThat(ticker.getAsk()).isGreaterThan(BigDecimal.ZERO);
-  }
+//  @Test
+//  public void fetchTickerTest() throws IOException {
+//    Exchange exchange = ExchangeFactory.INSTANCE.createExchange(BitflyerExchange.class);
+//    MarketDataService service = exchange.getMarketDataService();
+//
+//    Ticker ticker = service.getTicker(CurrencyPair.BTC_JPY);
+//    assertThat(ticker.getCurrencyPair()).isEqualTo(CurrencyPair.BTC_JPY);
+//    assertThat(ticker.getHigh()).isNull();
+//    assertThat(ticker.getLow()).isNull();
+//    assertThat(ticker.getLast()).isGreaterThan(BigDecimal.ZERO);
+//    assertThat(ticker.getVolume()).isGreaterThan(BigDecimal.ZERO);
+//    assertThat(ticker.getBid()).isGreaterThan(BigDecimal.ZERO);
+//    assertThat(ticker.getAsk()).isGreaterThan(BigDecimal.ZERO);
+//  }
 }

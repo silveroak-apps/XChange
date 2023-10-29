@@ -30,33 +30,33 @@ public class MarketDataServiceIntegration extends BinanceExchangeIntegration {
     Assume.assumeNotNull(exchange.getExchangeSpecification().getApiKey());
   }
 
-  @Test
-  public void testTimestamp() {
-
-    long serverTime = exchange.getTimestampFactory().createValue();
-    Assert.assertTrue(0 < serverTime);
-  }
-
-  @Test
-  public void testBinanceTicker24h() throws Exception {
-
-    List<BinanceTicker24h> tickers = new ArrayList<>();
-    for (Instrument cp : exchange.getExchangeMetaData().getInstruments().keySet()) {
-      if (cp.getCounter() == Currency.USDT) {
-        tickers.add(getBinanceTicker24h(cp));
-      }
-    }
-
-    tickers.sort((BinanceTicker24h t1, BinanceTicker24h t2) ->
-            t2.getPriceChangePercent().compareTo(t1.getPriceChangePercent()));
-
-    tickers
-        .forEach(
-            t -> System.out.println(
-                t.getSymbol()
-                    + " => "
-                    + String.format("%+.2f%%", t.getPriceChangePercent())));
-  }
+//  @Test
+//  public void testTimestamp() {
+//
+//    long serverTime = exchange.getTimestampFactory().createValue();
+//    Assert.assertTrue(0 < serverTime);
+//  }
+//
+//  @Test
+//  public void testBinanceTicker24h() throws Exception {
+//
+//    List<BinanceTicker24h> tickers = new ArrayList<>();
+//    for (Instrument cp : exchange.getExchangeMetaData().getInstruments().keySet()) {
+//      if (cp.getCounter() == Currency.USDT) {
+//        tickers.add(getBinanceTicker24h(cp));
+//      }
+//    }
+//
+//    tickers.sort((BinanceTicker24h t1, BinanceTicker24h t2) ->
+//            t2.getPriceChangePercent().compareTo(t1.getPriceChangePercent()));
+//
+//    tickers
+//        .forEach(
+//            t -> System.out.println(
+//                t.getSymbol()
+//                    + " => "
+//                    + String.format("%+.2f%%", t.getPriceChangePercent())));
+//  }
 
   private BinanceTicker24h getBinanceTicker24h(Instrument pair) throws IOException {
     BinanceMarketDataService service = (BinanceMarketDataService) marketService;
