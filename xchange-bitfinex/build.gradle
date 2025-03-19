@@ -43,7 +43,7 @@ dependencies {
 group = 'org.knowm.xchange'
 version = '5.1.1-SNAPSHOT'
 description = 'XChange Bitfinex'
-sourceCompatibility = '11'
+sourceCompatibility = '8'
 
 java {
     withSourcesJar()
