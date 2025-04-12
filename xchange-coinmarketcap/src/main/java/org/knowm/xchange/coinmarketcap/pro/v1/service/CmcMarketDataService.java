@@ -10,6 +10,7 @@ import java.util.Set;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.coinmarketcap.pro.v1.CmcAdapter;
 import org.knowm.xchange.coinmarketcap.pro.v1.CmcErrorAdapter;
+import org.knowm.xchange.coinmarketcap.pro.v1.cmcexchange.dto.CmcExchangeMetaData;
 import org.knowm.xchange.coinmarketcap.pro.v1.dto.marketdata.CmcTicker;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.currency.CurrencyPair;
@@ -81,5 +82,16 @@ public class CmcMarketDataService extends CmcMarketDataServiceRaw implements Mar
   @Override
   public Trades getTrades(CurrencyPair currencyPair, Object... objects) {
     throw new NotAvailableFromExchangeException();
+  }
+
+  public List<CmcExchangeMetaData> getAllExchanges() throws IOException {
+    List<CmcExchangeMetaData> cmcExchangeMetaDataList = new ArrayList<>();
+    try {
+      cmcExchangeMetaDataList = super.getCmcExchanges();
+    } catch (HttpStatusIOException ex) {
+      CmcErrorAdapter.adapt(ex);
+    }
+
+    return cmcExchangeMetaDataList;
   }
 }
