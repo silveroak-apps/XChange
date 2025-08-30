@@ -28,7 +28,7 @@ public class KrakenOrderbookExample {
                 BigDecimal bestBid = s.getBids().iterator().next().getLimitPrice();
                 BigDecimal bestAsk = s.getAsks().iterator().next().getLimitPrice();
                 if (bestBid.compareTo(bestAsk) > 0) {
-                  LOG.warn(
+                  log.info(
                       "Crossed {} book, best bid {}, best ask {}", currencyPair, bestBid, bestAsk);
                 }
               }

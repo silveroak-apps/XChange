@@ -229,7 +229,7 @@ public class BitmexStreamingService extends JsonNettyStreamingService {
 
   public void enableDeadMansSwitch(long rate, long timeout) throws IOException {
     if (dmsDisposable != null) {
-      LOG.warn("You already have Dead Man's switch enabled. Doing nothing");
+      log.info("You already have Dead Man's switch enabled. Doing nothing");
       return;
     }
     final BitmexWebSocketSubscriptionMessage subscriptionMessage =

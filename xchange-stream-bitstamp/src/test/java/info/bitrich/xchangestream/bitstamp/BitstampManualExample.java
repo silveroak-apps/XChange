@@ -23,7 +23,7 @@ public class BitstampManualExample {
     try {
       rateLimiter.acquire();
     } catch (InterruptedException e) {
-      LOG.warn("Bitstamp connection throttle control has been interrupted");
+      log.info("Bitstamp connection throttle control has been interrupted");
     }
   }
 

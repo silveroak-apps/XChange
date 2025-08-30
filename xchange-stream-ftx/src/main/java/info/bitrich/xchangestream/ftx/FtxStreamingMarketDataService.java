@@ -33,7 +33,7 @@ public class FtxStreamingMarketDataService implements StreamingMarketDataService
               try {
                 return FtxStreamingAdapters.adaptOrderbookMessage(orderBook, currencyPair, res);
               } catch (IllegalStateException e) {
-                LOG.warn(
+                log.info(
                     "Resubscribing {} channel after adapter error {}",
                     currencyPair,
                     e.getMessage());

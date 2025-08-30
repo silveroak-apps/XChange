@@ -178,7 +178,7 @@ public class KrakenStreamingService extends JsonNettyStreamingService {
                     : message.toString());
             break;
           default:
-            LOG.warn("Unexpected event type has been received: {}", krakenEvent);
+            log.info("Unexpected event type has been received: {}", krakenEvent);
         }
         return;
       }

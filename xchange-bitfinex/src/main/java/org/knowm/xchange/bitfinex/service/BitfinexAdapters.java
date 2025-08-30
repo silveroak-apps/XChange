@@ -536,13 +536,13 @@ public final class BitfinexAdapters {
             marketOrder = marketOrderCreator.get();
             break;
           default:
-            log.warn(
+            log.info(
                 "Unhandled Bitfinex order type [{}]. Defaulting to limit order", order.getType());
             limitOrder = limitOrderCreator.get();
             break;
         }
       } else {
-        log.warn("Unknown Bitfinex order type [{}]. Defaulting to limit order", order.getType());
+        log.info("Unknown Bitfinex order type [{}]. Defaulting to limit order", order.getType());
         limitOrder = limitOrderCreator.get();
       }
 
@@ -560,7 +560,7 @@ public final class BitfinexAdapters {
 
   private static void stopLimitWarning() {
     if (warnedStopLimit.compareAndSet(false, true)) {
-      log.warn(
+      log.info(
           "Found a stop-limit order. Bitfinex v1 API does not return limit prices for stop-limit "
               + "orders so these are returned as stop-at-market orders. This warning will only appear "
               + "once.");

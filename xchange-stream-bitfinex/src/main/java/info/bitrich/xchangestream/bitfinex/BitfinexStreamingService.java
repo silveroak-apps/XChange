@@ -181,7 +181,7 @@ public class BitfinexStreamingService extends JsonNettyStreamingService {
               LOG.error("Error with message: " + message.get("symbol") + " " + message.get("msg"));
               return;
             case SUBSCRIPTION_DUP:
-              LOG.warn("Already subscribed: " + message.toString());
+              log.info("Already subscribed: " + message.toString());
               return;
           }
           super.handleError(message, new ExchangeException("Error code: " + code));

@@ -50,7 +50,7 @@ public class HuobiStreamingService extends JsonNettyStreamingService {
       return null;
     }
     if (message.has("err-msg")) {
-      LOG.warn("error: {}", message.get("err-msg").textValue());
+      log.info("error: {}", message.get("err-msg").textValue());
     }
     return ch;
   }
@@ -106,7 +106,7 @@ public class HuobiStreamingService extends JsonNettyStreamingService {
         try {
           handler.onMessage(decodeByteBuff(byteBuf));
         } catch (Exception e) {
-          LOG.warn("Error when inflate websocket binary message: {}", e.toString());
+          log.info("Error when inflate websocket binary message: {}", e.toString());
         }
       }
     }

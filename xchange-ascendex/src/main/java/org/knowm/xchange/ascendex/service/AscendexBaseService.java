@@ -46,8 +46,8 @@ public class AscendexBaseService extends BaseExchangeService implements BaseServ
           ExchangeRestProxyBuilder.forInterface(IAscendexAuthenticated.class, specWithAccountGroup)
               .build();
     } else {
-      LOG.warn(
-          "Authenticated endpoints will not work because no 'account-group' specificParameter has been found.");
+//      log.info(
+//          "Authenticated endpoints will not work because no 'account-group' specificParameter has been found.");
     }
     signatureCreator =
         AscendexDigest.createInstance(exchange.getExchangeSpecification().getSecretKey());

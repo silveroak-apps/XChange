@@ -101,7 +101,7 @@ public class HitbtcStreamingService extends JsonNettyStreamingService {
 
     String channel = getChannel(message);
     if (!channels.containsKey(channel)) {
-      LOG.warn("The message has been received from disconnected channel '{}'. Skipped.", channel);
+      log.info("The message has been received from disconnected channel '{}'. Skipped.", channel);
       return;
     }
 

@@ -140,7 +140,7 @@ public final class Balance implements Comparable<Balance>, Serializable {
       BigDecimal sum =
           available.add(frozen).subtract(borrowed).add(loaned).add(withdrawing).add(depositing);
       if (0 != total.compareTo(sum)) {
-        log.warn(
+        log.info(
             "{} = total != available + frozen - borrowed + loaned + withdrawing + depositing = {}",
             total,
             sum);
@@ -190,7 +190,7 @@ public final class Balance implements Comparable<Balance>, Serializable {
       BigDecimal sum =
           available.add(frozen).subtract(borrowed).add(loaned).add(withdrawing).add(depositing);
       if (0 != total.compareTo(sum)) {
-        log.warn(
+        log.info(
             "{} = total != available + frozen - borrowed + loaned + withdrawing + depositing = {}",
             total,
             sum);

@@ -71,7 +71,7 @@ public class CoinbaseProStreamingTradeService implements StreamingTradeService {
       throw new ExchangeSecurityException("Not authenticated");
     }
     if (!orderChangesWarningLogged) {
-      LOG.warn(
+      log.info(
           "The order change stream is not yet fully implemented for Coinbase Pro. "
               + "Orders are not fully populated, containing only the values changed since "
               + "the last update. Other values will be null.");

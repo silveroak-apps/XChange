@@ -49,7 +49,7 @@ public class KrakenStreamingMarketDataService implements StreamingMarketDataServ
                 return KrakenStreamingAdapters.adaptOrderbookMessage(
                     depth, bids, asks, currencyPair, arrayNode);
               } catch (IllegalStateException e) {
-                LOG.warn(
+                log.info(
                     "Resubscribing {} channel after adapter error {}",
                     currencyPair,
                     e.getMessage());
@@ -95,7 +95,7 @@ public class KrakenStreamingMarketDataService implements StreamingMarketDataServ
         .filter(
             list -> {
               if (list.size() < maxItems) {
-                LOG.warn(
+                log.info(
                     "Invalid message in channel {}. It contains {} array items but expected at least {}",
                     channelName,
                     list.size(),

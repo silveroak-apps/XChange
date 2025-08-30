@@ -109,7 +109,7 @@ public class CoinbaseProStreamingAdapters {
       dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
       return dateFormat.parse(modified);
     } catch (ParseException e) {
-      LOG.warn("unable to parse rawDate={} modified={}", rawDate, modified, e);
+      log.info("unable to parse rawDate={} modified={}", rawDate, modified, e);
       return null;
     }
   }

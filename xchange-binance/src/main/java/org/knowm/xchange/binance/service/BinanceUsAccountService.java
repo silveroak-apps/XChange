@@ -71,7 +71,6 @@ public class BinanceUsAccountService extends BinanceAccountService {
 
   @Override
   public Map<String, AssetDetail> getAssetDetails() {
-    LOG.warn("getAssetDetails: {}", NOT_SUPPORTED);
     return new HashMap<>();
   }
 
@@ -82,13 +81,11 @@ public class BinanceUsAccountService extends BinanceAccountService {
 
   @Override
   public List<FundingRecord> getFundingHistory(TradeHistoryParams params) {
-    LOG.warn("getFundingHistory: {}", NOT_SUPPORTED);
     return new ArrayList<>();
   }
 
   @Override
   public BinanceSystemStatus getSystemStatus() {
-    LOG.warn("getSystemStatus: {}", NOT_SUPPORTED);
     return new BinanceSystemStatus();
   }
 }

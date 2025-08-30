@@ -15,7 +15,7 @@ public class BitsoDemoUtils {
 
     ExchangeSpecification exSpec = new BitsoExchange().getDefaultExchangeSpecification();
 
-    log.warn("Bitso credentials must be set in BitsoDemoUtils.java.");
+    log.info("Bitso credentials must be set in BitsoDemoUtils.java.");
 
     // Set your credentials here:
     exSpec.setUserName("12345");

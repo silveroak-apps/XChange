@@ -71,7 +71,7 @@ public class BitstampStreamingService extends JsonNettyStreamingService {
       case EVENT_ORDERBOOK:
       case EVENT_TRADE:
         if (!channels.containsKey(channel)) {
-          LOG.warn(
+          log.info(
               "The message has been received from disconnected channel '{}'. Skipped.", channel);
           return;
         }
@@ -84,7 +84,7 @@ public class BitstampStreamingService extends JsonNettyStreamingService {
         LOG.info("Channel {} has been successfully unsubscribed", channel);
         break;
       default:
-        LOG.warn("Unsupported event type {} in message {}", event, message.toString());
+        log.info("Unsupported event type {} in message {}", event, message.toString());
     }
   }
 

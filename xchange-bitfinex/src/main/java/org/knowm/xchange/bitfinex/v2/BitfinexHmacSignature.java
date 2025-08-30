@@ -38,7 +38,7 @@ public class BitfinexHmacSignature extends BaseParamsDigest {
     try {
       path = URLDecoder.decode(path, "utf8");
     } catch (UnsupportedEncodingException e) {
-      log.warn("Could not url decode the path {}.", path, e);
+      log.info("Could not url decode the path {}.", path, e);
     }
 
     Object nonce = i.getParamValue(HeaderParam.class, BitfinexAuthenticated.BFX_NONCE);

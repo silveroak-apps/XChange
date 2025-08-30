@@ -25,7 +25,7 @@ public class BitfinexManualExample {
     try {
       rateLimiter.acquire();
     } catch (InterruptedException e) {
-      LOG.warn("Bitfinex connection throttle control has been interrupted");
+      log.info("Bitfinex connection throttle control has been interrupted");
     }
   }
 

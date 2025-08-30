@@ -264,9 +264,9 @@ public abstract class NettyStreamingService<T> extends ConnectableService {
         .doOnError(
             t -> {
               if (t instanceof WebSocketHandshakeException) {
-                LOG.warn("Problem with connection: {} - {}", t.getClass(), t.getMessage());
+                log.info("Problem with connection: {} - {}", t.getClass(), t.getMessage());
               } else {
-                LOG.warn("Problem with connection", t);
+                log.info("Problem with connection", t);
               }
               connectionStateModel.setState(State.CLOSED);
               reconnFailEmitters.onNext(t);
@@ -333,7 +333,7 @@ public abstract class NettyStreamingService<T> extends ConnectableService {
                       completable.onComplete();
                     });
           } else {
-            LOG.warn("Disconnect called but already disconnected");
+            log.info("Disconnect called but already disconnected");
             connectionStateModel.setState(State.CLOSED);
             completable.onComplete();
           }
@@ -362,12 +362,12 @@ public abstract class NettyStreamingService<T> extends ConnectableService {
     LOG.debug("Sending message: {}", message);
 
     if (webSocketChannel == null || !webSocketChannel.isOpen()) {
-      LOG.warn("WebSocket is not open! Call connect first.");
+      log.info("WebSocket is not open! Call connect first.");
       return;
     }
 
     if (!webSocketChannel.isWritable()) {
-      LOG.warn("Cannot send data to WebSocket as it is not writable.");
+      log.info("Cannot send data to WebSocket as it is not writable.");
       return;
     }
     if (message != null) {
@@ -423,7 +423,7 @@ public abstract class NettyStreamingService<T> extends ConnectableService {
                 } catch (IOException e) {
                   LOG.debug("Failed to unsubscribe channel: {} {}", channelId, e.toString());
                 } catch (Exception e) {
-                  LOG.warn("Failed to unsubscribe channel: {}", channelId, e);
+                  log.info("Failed to unsubscribe channel: {}", channelId, e);
                 }
               }
             })

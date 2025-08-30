@@ -92,7 +92,7 @@ public class KrakenStreamingAdapters {
     }
     long localChecksum = createCrcChecksum(asks, bids);
     if (expectedChecksum.get() > 0 && expectedChecksum.get() != localChecksum) {
-      LOG.warn(
+      log.info(
           "{} checksum does not match, expected {} but local checksum is {}",
           instrument,
           expectedChecksum.get(),
