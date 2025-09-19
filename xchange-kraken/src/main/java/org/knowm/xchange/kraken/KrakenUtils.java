@@ -33,6 +33,7 @@ public class KrakenUtils {
     discontinuedCurrencies.put("XXVN", "XVN");
     discontinuedCurrencies.put("ZKRW", "KRW");
     discontinuedCurrencies.put("MIRA", "MIRA");
+    discontinuedCurrencies.put("EURC", "EURC");
   }
 
   /** Private Constructor */
