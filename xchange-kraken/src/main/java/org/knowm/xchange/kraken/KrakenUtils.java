@@ -35,6 +35,7 @@ public class KrakenUtils {
     discontinuedCurrencies.put("MIRA", "MIRA");
     discontinuedCurrencies.put("EURC", "EURC");
     discontinuedCurrencies.put("VELVET", "VELVET");
+    discontinuedCurrencies.put("TAKE", "TAKE");
   }
 
   /** Private Constructor */
